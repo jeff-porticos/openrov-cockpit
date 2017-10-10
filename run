@@ -1,0 +1,1 @@
+sudo MOCK=true HARDWARE_MOCK=true PLATFORM=mock node src/cockpit.js
