@@ -137,12 +137,12 @@ ClassicControlMapping.prototype.getControlMappingPreset = function getControlMap
               "bindings": [
                 {
                   "name": "keyboard",
-                  "binding": "6 ="
+                  "binding": "+"
                 }
               ],
               "description": "Makes the ROV lights brighter.",
               "defaults": {
-                "keyboard": "6 ="
+                "keyboard": "+"
               }
             },
             {
@@ -150,12 +150,12 @@ ClassicControlMapping.prototype.getControlMappingPreset = function getControlMap
               "bindings": [
                 {
                   "name": "keyboard",
-                  "binding": "6 -"
+                  "binding": "_"
                 }
               ],
               "description": "Makes the ROV lights dimmer.",
               "defaults": {
-                "keyboard": "6 -"
+                "keyboard": "_"
               }
             },
             {
@@ -163,12 +163,12 @@ ClassicControlMapping.prototype.getControlMappingPreset = function getControlMap
               "bindings": [
                 {
                   "name": "keyboard",
-                  "binding": "6 0"
+                  "binding": "O"
                 }
               ],
               "description": "Toggles the ROV lights on/off.",
               "defaults": {
-                "keyboard": "6 0"
+                "keyboard": "O"
               }
             },
             {

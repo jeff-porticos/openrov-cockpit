@@ -19,7 +19,7 @@ var settingsManager = function settingsManager(name, deps) {
     var view = __filename.substring(0, __filename.lastIndexOf('/')) + '/' + 'settings.ejs';
     var pathInfo = deps.pathInfo();
     res.render(view, {
-      title: 'OpenROV ROV Settings',
+      title: 'ABB STIR Settings',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -30,7 +30,7 @@ var settingsManager = function settingsManager(name, deps) {
 //Private functions
 var _makeSchema = function (schemaArray) {
   var s = {
-      'title': 'OpenROV Settings',
+      'title': 'ABB STIR Settings',
       'type': 'object',
       'properties': {}
     };
@@ -103,7 +103,7 @@ settingsManager.prototype.listen = function listen() {
   });
   self.deps.cockpit.on('plugin.settings-manager.getSchemas', function (fn) {
     var s = {
-        'title': 'OpenROV Settings',
+        'title': 'ABB STIR Settings',
         'type': 'object',
         'properties': {}
       };

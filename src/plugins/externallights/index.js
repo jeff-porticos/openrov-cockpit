@@ -29,7 +29,7 @@
 
             var self = this;
 
-            this.SyncTargetPower = new Periodic( 33, "timeout", function()
+            this.SyncTargetPower = new Periodic( 100, "timeout", function()
             {
                 var synced = true;
 

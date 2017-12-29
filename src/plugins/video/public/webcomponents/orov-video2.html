@@ -2,39 +2,27 @@
 <link rel="import" href="../mjpeg-video-webcomponents/mjpeg-video.html">
 <link rel="import" href="../packet-video/packet-video.html">
 <link rel="import" href="../orov-behaviors/orov-behavior.html">
-<link rel="import" href="../mjpeg-video/mjpeg-packet-video.html">
+<link rel="import" href="../mjpeg-video/mjpeg-packet-video2.html">
 
-<dom-module name="orov-video">
+<dom-module name="orov-video2">
   <style>
   </style>
 
   <template>
-    <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','http',_registerdConnection)}}" >
-      <mjpeg-video id="{{activeCamera(_registerdConnection)}}" border='1' style='width: 100%; height:100%'
-      menuState='on'
-      src='{{videoSource}}'
-      framespersecond='{{framesPerSecond}}'
-      canvas='{{canvas}}'
-      cors='false'
-      showMenu='true'>
-        <content></content>
-      </mjpeg-video>
-    </template>
-
     <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','ws',_registerdConnection)}}" >
-      <mjpeg-packet-video id="{{activeCamera(_registerdConnection)}}" border='1' style='width: 100%; height:100%'>
+      <mjpeg-packet-video2 id="camera02" border='1' style='width: 100%; height:100%'>
         <content></content>
-      </mjpeg-packet-video>
+      </mjpeg-packet-video2>
     </template>
 
     <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','wss',_registerdConnection)}}" >
-      <mjpeg-packet-video id="{{activeCamera(_registerdConnection)}}" border='1' style='width: 100%; height:100%'>
+      <mjpeg-packet-video2 id="camera02" border='1' style='width: 100%; height:100%'>
         <content></content>
-      </mjpeg-packet-video>
+      </mjpeg-packet-video2>
     </template>        
 
     <template id="mp4template" is="dom-if" if="{{displayPlayer(videoMimeType,'video/mp4','socket.io|rov',_registerdConnection)}}">
-      <packet-video id="{{activeCamera(_registerdConnection)}}" border='1' style='width: 100%; height:100%'
+      <packet-video id="camera02" border='1' style='width: 100%; height:100%'
       menuState='on'
       src='{{videoSource}}'
       framespersecond='{{framesPerSecond}}'
@@ -51,7 +39,7 @@
 
       Polymer(
         {
-        is: "orov-video",
+        is: "orov-video2",
         properties: 
         {
           videoSource:          { type: Object },
@@ -139,14 +127,14 @@
               return;
             }         
 
-            if (self.$$('#camera0')===null)
+            if (self.$$('#camera02')===null)
             {
               return;
             }
 
-            if(self.$$('#camera0').initialized)
+            if(self.$$('#camera02').initialized)
             {
-              self.$$('#camera0').append(new Uint8Array(data));
+              self.$$('#camera02').append(new Uint8Array(data));
             } 
             else 
             {
@@ -156,10 +144,10 @@
 
                 emitter.emit('request_Init_Segment',function(data)
                 {
-                  self.$$('#camera0').init(new Uint8Array(data),function()
+                  self.$$('#camera02').init(new Uint8Array(data),function()
                   {
                     packetVideo_initializationInProgress = false;
-                    emitter.emit('video.videoElementAvailable',self.$$('#camera0').getVideoElement());
+                    emitter.emit('video.videoElementAvailable',self.$$('#camera02').getVideoElement());
                   });
                 });
 
@@ -173,19 +161,22 @@
           });
 
 
-          emitter.on('x-motion-jpeg.data',function(frame, camera )
+          emitter.on('x-motion-jpeg.data',function(frame, origin )
           {
             if (self.shortCircuit) 
             {
               return;
             }     
 
-            if (self.$$(camera)===null)
+            if (self.$$('#camera02')===null)
             {
               return;
             }
 
-            self.$$(camera).append(frame);
+            var portStr = origin.substring((origin.length-4));
+            if (portStr !== "8093") return;
+
+            self.$$('#camera02').append(frame);
           })
         },
 
@@ -205,13 +196,13 @@
           }
 
           var connectionMatch = connection == null ? true : connection.indexOf(registeredConnection.connectionType) > -1;
-          return ((mimeType==playerType) && connectionMatch);
+          return ((registeredConnection.cameraID == 1) && (mimeType==playerType) && connectionMatch);
         },
 
         activeCamera(registeredConnection)
         {
           // return(registeredConnection.cameraName);
-          return("camera0");
+          return("camera02");
         }
     });
   </script>

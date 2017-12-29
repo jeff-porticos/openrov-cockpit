@@ -79,10 +79,11 @@
   {
     var self = this;
     var CameraRegistrations = {};
+    var ws = {};
 
     this.rov.withHistory.on('CameraRegistration', function (data) 
     {
-      //TODO: More robust handling of duplicat CameraRegistration messages.  If the Camera
+      //TODO: More robust handling of duplicate CameraRegistration messages.  If the Camera
       //already is setup, we want to ignore.  But we also want to handle multiple Cameras
       //and camera's that change settings.
       data.sourceAddress = ResolveURL( data.relativeServiceUrl );
@@ -98,7 +99,6 @@
       {
       case 'ws':
         var address = data.sourceAddress;
-
         if( address.startsWith( "https" ) )
         {
           console.error( "Can't connect to ws on an https connection. Ignoring camera registration." );
@@ -115,16 +115,16 @@
         }
 
         // Connect to websocket
-        var ws = new WebSocket( address );
+        ws[ data.sourceAddress ] = new WebSocket( address );
 
         // Set up ws listener to draw frames
-        ws.onmessage = function( evt ) 
+        ws[ data.sourceAddress ].onmessage = function( evt ) 
         {
             // Emit packet on the cockpit bus
-            self.cockpit.emit( 'x-motion-jpeg.data', evt.data );
+            self.cockpit.emit( 'x-motion-jpeg.data', evt.data, evt.origin );
         };
 
-        ws.onclose = function() 
+        ws[ data.sourceAddress ].onclose = function() 
         {
             console.log( "Lost connection to video websocket. Removing registration." );
             CameraRegistrations[ data.sourceAddress ] = false;
@@ -151,16 +151,16 @@
         }
 
         // Connect to websocket
-        var ws = new WebSocket( address );
+        ws[ data.sourceAddress ] = new WebSocket( address );
 
         // Set up ws listener to draw frames
-        ws.onmessage = function( evt ) 
+        ws[ data.sourceAddress ].onmessage = function( evt ) 
         {
             // Emit packet on the cockpit bus
-            self.cockpit.emit( 'x-motion-jpeg.data', evt.data );
+            self.cockpit.emit( 'x-motion-jpeg.data', evt.data, evt.origin );
         };
 
-        ws.onclose = function() 
+        ws[ data.sourceAddress ].onclose = function() 
         {
             console.log( "Lost connection to video websocket. Removing registration." );
             CameraRegistrations[ data.sourceAddress ] = false;
@@ -185,16 +185,16 @@
             fn(data);
           });
         };
-        var handleData = function (data) {
-          self.cockpit.emit('x-h264-video.data', data);
+        var handleData = function (data, address) {
+          self.cockpit.emit('x-h264-video.data', data, address );
         };
-        var handleMjpegData = function (data) {
-          self.cockpit.emit('x-motion-jpeg.data', data);
+        var handleMjpegData = function (data, address) {
+          self.cockpit.emit('x-motion-jpeg.data', data, address );
         };
         //TODO: abstract the messages enough that we can have multiple cameras controls
         self.cockpit.on('request_Init_Segment', handleInit);
-        connection.on('x-h264-video.data', handleData);
-        connection.on('x-motion-jpeg.data', handleMjpegData);
+        connection.on('x-h264-video.data', handleData, data.sourceAddress );
+        connection.on('x-motion-jpeg.data', handleMjpegData, data.sourceAddress );
         connection.on('connect', function () {
           console.log('connected to socket.io video server end point');
         });
@@ -205,8 +205,8 @@
         //data is comming over the rov bus, just pass it on to the cockpit bus
         var dataflowing = false;
         //this wont work for multiple cameras.
-        self.rov.on('x-h264-video.data', function (data) {
-          self.cockpit.emit('x-h264-video.data', data);
+        self.rov.on('x-h264-video.data', function (data, address) {
+          self.cockpit.emit('x-h264-video.data', data, address);
           if (!dataflowing) {
             dataflowing = true;
             self.cockpit.on('request_Init_Segment', function (fn) {

@@ -100,6 +100,7 @@
         'status',
         'x-h264-video.data',
         'x-h264-video.init',
+        'x-motion-jpeg.data',
         'plugin-blackbox-export',
         'plugin-blackbox-recording-start',
         'plugin-blackbox-recording-stop',
@@ -148,6 +149,9 @@
       //TODO: Will generalize to pass all video events from all
       //cameras that are choosen for recording
       self.logMP4Video('x-h264-video.data', data);
+    });
+    this.cockpit.on('x-motion-jpeg.data', function (data) {
+      self.logMPVideo('x-motion-jpeg.data', data);
     });
     this.cockpit.on('plugin-blackbox-export', function (options) {
       self.exportData(options);
@@ -438,6 +442,17 @@
   };
   var initFrame = null;
   window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
+  Blackbox.prototype.logMPVideo = function logMPVideo(event, data) {
+    if (!this.recording) {
+      return;
+    }
+    this.eventBuffer.push({
+        timestamp: Date.now(),
+        sessionID: this.sessionID,
+        event: event,
+        data: data
+    });
+  };
   Blackbox.prototype.logMP4Video = function logMP4Video(event, data) {
     var self = this;
     if (!this.recording) {

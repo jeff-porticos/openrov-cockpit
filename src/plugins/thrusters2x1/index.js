@@ -95,7 +95,7 @@ thrusters2x1.prototype.getSettingSchema = function getSettingSchema() {
           }
         },
         'vertical': {
-          'title:': 'Port Motor',
+          'title:': 'Vertical Motor',
           'type': 'object',
           'properties': {
             'reversed': {
@@ -116,7 +116,7 @@ thrusters2x1.prototype.getSettingSchema = function getSettingSchema() {
           }
         },
         'starboard': {
-          'title:': 'Port Motor',
+          'title:': 'Starboard Motor',
           'type': 'object',
           'properties': {
             'reversed': {

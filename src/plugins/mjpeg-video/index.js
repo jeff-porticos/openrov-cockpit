@@ -10,7 +10,7 @@
     var logger;
     var defaults = 
     {
-        port: 8300,
+        port: 8090,
         wspath: '/mjpeg'
     };
 
@@ -161,14 +161,16 @@
                     this.globalBus.emit( 'CameraRegistration', 
                     {
                         location:           "forward",               // TODO: Lookup location based on serial ID
-                        videoMimeType: 		"video/x-motion-jpeg",
+                        videoMimeType: 	    "video/x-motion-jpeg",
                         resolution:         info.resolution,
                         framerate:          info.framerate, 
                         wspath:             "",
                         relativeServiceUrl: `:${info.port}`,
                         sourcePort:         info.port,
                         sourceAddress:      "",
-                        connectionType:     info.connectionType
+                        connectionType:     info.connectionType,
+                        cameraName:         info.cameraName,
+                        cameraID:           info.cameraID
                     });
                 })
             }
@@ -234,7 +236,7 @@
                             '10'
                         ],
                         'title': 'Framerate (FPS)',
-                        'default': '30'
+                        'default': '10'
                     },
                     'resolution': 
                     {

@@ -186,7 +186,7 @@
         delete: function(e){
            var model = e.model;
            if(this.eventEmitter !== undefined){
-             if(confirm(this.__("Pressing OK will permanetly delete the selected dive data from your computer/device."))){
+             if(confirm(this.__("Pressing OK will permanently delete the selected dive data from your computer/device."))){
               this.eventEmitter.emit('plugin-blackbox-delete-session',e.model.item.sessionID);
              }
            }                    

@@ -66,7 +66,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/base.ejs', {
-      title: 'OpenROV ROV Cockpit',
+      title: 'ABB STIR Cockpit',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -85,7 +85,7 @@ UIManager.prototype.start = function start() {
   this.deps.app.get('/popup', function (req, res) {
     var theme = self.deps.config.preferences.get('plugins:ui-manager').selectedUI;
     var ua = req.header('user-agent');
-    // Check the user-agent string to identyfy the device. 
+    // Check the user-agent string to identify the device. 
     if (/mobile|iphone|ipod|android|blackberry|opera|mini|windows\sce|palm|smartphone|iemobile|ipad|android|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(ua)) {
       theme = 'mobile-ui';
     }
@@ -110,7 +110,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/popup.ejs', {
-      title: 'OpenROV ROV Cockpit',
+      title: 'ABB STIR Cockpit',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -130,7 +130,7 @@ UIManager.prototype.start = function start() {
   this.deps.app.get('/all_imports.html', function (req, res) {
     var theme = self.deps.config.preferences.get('plugins:ui-manager').selectedUI;
     var ua = req.header('user-agent');
-    // Check the user-agent string to identyfy the device. 
+    // Check the user-agent string to identify the device. 
     if (/mobile|iphone|ipod|android|blackberry|opera|mini|windows\sce|palm|smartphone|iemobile|ipad|android|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(ua)) {
       theme = 'mobile-ui';
     }
@@ -155,7 +155,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/all_imports.ejs', {
-      title: 'OpenROV ROV Cockpit',
+      title: 'ABB STIR Cockpit',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -174,7 +174,7 @@ UIManager.prototype.start = function start() {
   this.deps.app.get('/all_scripts.html', function (req, res) {
     var theme = self.deps.config.preferences.get('plugins:ui-manager').selectedUI;
     var ua = req.header('user-agent');
-    // Check the user-agent string to identyfy the device. 
+    // Check the user-agent string to identify the device. 
     if (/mobile|iphone|ipod|android|blackberry|opera|mini|windows\sce|palm|smartphone|iemobile|ipad|android|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(ua)) {
       theme = 'mobile-ui';
     }
@@ -199,7 +199,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/all_scripts.ejs', {
-      title: 'OpenROV ROV Cockpit',
+      title: 'ABB STIR Cockpit',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,

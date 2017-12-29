@@ -11,7 +11,7 @@ function pluginManager(name, deps) {
     var view = __filename.substring(0, __filename.lastIndexOf('/')) + '/' + 'addonmanager.ejs';
     var pathInfo = deps.pathInfo();
     res.render(view, {
-      title: 'OpenROV ROV Addons',
+      title: 'ABB STIR Addons',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,

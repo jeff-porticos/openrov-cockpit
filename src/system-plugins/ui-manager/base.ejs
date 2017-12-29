@@ -257,12 +257,8 @@ ga('send', 'pageview');
 <link rel="import" href="components/platinum-sw/platinum-sw-cache.html">
 <link rel="import" href="components/platinum-sw/platinum-sw-fetch.html">
 <link rel="import" href="components/platinum-sw/platinum-sw-import-script.html">
-<link rel="import" href="components/terms-of-use/terms-of-use.html">
 <!--TODO: Add logic to support either popout or popin(swapping) of applets-->
 <template id="t" is="dom-bind"  strip-whitespace>
- <terms-of-use style="z-index:9999;display:block;position:absolute;width:100%;heigh:100%;"></terms-of-use>
-                                                
-
   <!--
     TODO: Occasionally see a `Uncaught (in promise) DOMException: Entry was not found.` error that has to do with
     the system trying to open the cache.  Suspect the logic to expire the cache with a new sw-script is putting
@@ -427,7 +423,7 @@ function setupLazyScriptBundleMetics() {
  setupLazyScriptBundleMetics();
 window.addEventListener('WebComponentsReady', function(e) {
  // setupLazyImportsBundleMetics();
-   console.info("Web Componet Ready Event",$('#t')[0].rovOnline);
+   console.info("Web Component Ready Event",$('#t')[0].rovOnline);
 
  });
 

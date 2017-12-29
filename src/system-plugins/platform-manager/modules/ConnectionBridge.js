@@ -48,7 +48,7 @@ function Bridge(socket_id) {
     });
 
     serialPort.on('data', function (data) {
-           console.log("data: " + data); 
+           // console.log("data: " + data); 
            var status = reader.parseStatus(data);
            bridge.emit('status', status);
     //     if (emitRawSerial) {
@@ -70,7 +70,7 @@ function Bridge(socket_id) {
         commandBuffer
       ]);
     if (serialConnected) {
-      console.log("Bridge Write: " + messagebuffer);
+      // console.log("Bridge Write: " + messagebuffer);
       var now = new Date();
       var delay = 3 - (now.getTime() - lastWriteTime.getTime());
       if (delay < 0) {
@@ -126,7 +126,7 @@ var StatusReader = function () {
     }
   };
   reader.parseStatus = function parseStatus(rawStatus) {
-    console.log("rawStatus: " + rawStatus);
+    // console.log("rawStatus: " + rawStatus);
     var rawStatusString = rawStatus.toString();
     var parts = rawStatusString.split(';');
     var status = {};

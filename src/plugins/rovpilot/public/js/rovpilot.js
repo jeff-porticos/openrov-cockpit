@@ -17,7 +17,8 @@
         lift: 0,
         pitch: 0,
         roll: 0,
-        strafe: 0
+        strafe: 0,
+        ballast: 0
       };
       self.powerLevel = 1;
       self.priorControls = {};
@@ -36,6 +37,38 @@
       //Input mappings
       self.actions = 
       {
+        'rovPilot.increaseBallast':
+        {
+          description: 'Increase ballast motor speed',
+          controls:
+          {
+            button:
+            {
+              down: function() {
+                self.cockpit.emit('plugin.rovpilot.setBallast', 1);
+              },
+              up: function() {
+                self.cockpit.emit('plugin.rovpilot.setBallast', 0);
+              }           
+            }
+          }
+        },
+        'rovPilot.decreaseBallast':
+        {
+          description: 'Decrease ballast motor speed',
+          controls:
+          {
+            button:
+            {
+              down: function() {
+                self.cockpit.emit('plugin.rovpilot.setBallast', -1);
+              },
+              up: function() {
+                self.cockpit.emit('plugin.rovpilot.setBallast', 0);
+              }           
+            }
+          }
+        },
         'rovPilot.moveForward':
         {
           description: 'Set throttle forward',
@@ -290,6 +323,10 @@
                 action: 'rovPilot.moveUp' },       
           "c": { type: "button",
                 action: 'rovPilot.moveDown' }, 
+          "b": { type: "button",
+                action: 'rovPilot.decreaseBallast' }, 
+          "shift+b": { type: "button",
+                action: 'rovPilot.increaseBallast' }, 
           "1": { type: "button",
                 action: 'rovPilot.powerLevel1' }, 
           "2": { type: "button",
@@ -428,6 +465,10 @@
         self.positions.yaw = value;
       });
 
+      self.cockpit.on('plugin.rovpilot.setBallast', function (value) {
+        self.positions.ballast = value;
+      });
+
       self.rovSendPilotingDataTimer = setInterval(function() {
         self.sendPilotingData();
       }, 100 );
@@ -466,6 +507,7 @@
       controls.pitch = positions.pitch;
       controls.roll = positions.roll;
       controls.strafe = positions.strafe;
+      controls.ballast = positions.ballast;
       for (var i in positions) {
         if (controls[i] != self.priorControls[i]) {
           updateRequired = true;

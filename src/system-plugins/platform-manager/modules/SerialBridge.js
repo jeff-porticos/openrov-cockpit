@@ -39,7 +39,6 @@ function Bridge(uartPath,uartBaud) {
       parser=serialPort.pipe(Readline({delimiter: '\r\n'}));   
     }    
 
-
     serialPort.on('open', function () {
       serialConnected = true;
       logger.debug('Serial port opened!');

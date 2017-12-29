@@ -17,8 +17,8 @@
     behaviors: [namespace('behaviors').oROVStandard,namespace('behaviors').oROVLightSwitch],
     ready:function(){
         this.defaultPanel="flight-switches";
-        this.shortName="LED";
-        this.description="Lights on/off";
+        this.shortName="KILL";
+        this.description="Power Kill";
     },
     _handleSwitchChange:function(){
         if (this.$.toggle.checked){

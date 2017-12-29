@@ -22,13 +22,18 @@
             self.stepMap =
             {
                 "0": 0.0,
-                "1": 0.2,
-                "2": 0.4,
-                "3": 0.6,
-                "4": 0.8,
-                "5": 1.0,
+                "1": 0.1,
+                "2": 0.2,
+                "3": 0.3,
+                "4": 0.4,
+                "5": 0.5,
+                "6": 0.6,
+                "7": 0.7,
+                "8": 0.8,
+                "9": 0.9,
+                "10": 1.0,
                 "min": 0,
-                "max": 5
+                "max": 10
             }
 
             self.actions = 
@@ -79,11 +84,11 @@
             {
                 keyboard:
                 {
-                    "=": { type: "button",
+                    "+": { type: "button",
                            action: "plugin.externalLights.stepPositive" },
-                    "-": { type: "button",
+                    "_": { type: "button",
                            action: "plugin.externalLights.stepNegative" },
-                    "0": { type: "button",
+                    "shift+o": { type: "button",
                            action: "plugin.externalLights.toggle" },
                 }
             };
@@ -141,7 +146,7 @@
             // Calculate closest step
             if( this.targetPower < 1.0 )
             {
-                this.currentStep = Math.floor( this.targetPower / 0.2 )
+                this.currentStep = Math.floor( this.targetPower / 0.1 )
             }
             else
             {

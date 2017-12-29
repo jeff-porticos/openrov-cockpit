@@ -1,4 +1,5 @@
 <link rel="import" href="components/polymer/polymer.html">
+<link rel="import" href="components/iron-pages/iron-pages.html">
 
 <link rel="import" href="components/new-ui/time.html">
 <link rel="import" href="components/new-ui/time-slim.html">
@@ -10,7 +11,10 @@
 <link rel="import" href="components/new-ui/power.html">
 <link rel="import" href="components/new-ui/power-slim.html">
 <link rel="import" href="components/diagnostics/diagnostics.html">
-<link rel="import" href="components/video/orov-video.html">
+<link rel="import" href="components/video/orov-video1.html">
+<link rel="import" href="components/video/orov-video2.html">
+<link rel="import" href="components/video/orov-video3.html">
+<link rel="import" href="components/video/orov-video4.html">
 <link rel="import" href="components/navigation-data/orov-horizon.html">
 <link rel="import" href="components/navigation-data/attitude-indicator.html">
 <link rel="import" href="components/connection-health/orov-ping-graph.html">
@@ -43,31 +47,144 @@
         text-align: center;
         border-bottom: 0px;
     }
+
+    .box {
+        box-sizing: border-box;
+        float: left;
+        width: 50%;
+        height: 50%;
+    }
+
+    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    .active, .accordion:hover {
+        background-color: #ccc;
+    }
+
+    /* Style the accordion panel. Note: hidden by default */
+    .panel {
+        padding: 0 18px;
+        height: 80%;
+        background-color: black;
+        display: none;
+    }
+
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: none;
+        background-color: transparent;
+        list-style-type: none;
+    }
+
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+        background-color: #f1f1f1;
+        float: left;
+        border: 1px solid #ccc;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.4s;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+        height: 100%;
+        width: 100%;
+    }
+
 </style>
 <!--iron-media-query query="(max-height: 600px)" query-matches="{{short}}"></iron-media-query-->
+<script>
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+
+    function openCamera(evt, cameraName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cameraName).style.display = "inline-block";
+        evt.currentTarget.className += " active";
+    }
+
+</script>
 
 <div id="UI" class="full-height">
     <div id="newuiBody" class="full-height">
         <div id="newuiContainer">
         </div>
         <div id="mainContent" class="full-height">
-
-            <div id="newuiVideo" class="full-height">
-                <orov-video id="camera1" border='1' style='width: 100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
-                    <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
-                    <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
-                    <attitude-indicator id="horizon" style='position:absolute; top:0px; left:0px; z-index:33; width:100%; height:100%' event-emitter="{{cockpitEventEmitter}}"></attitude-indicator>
-                    <div style='position:absolute; top:0px; left:0px; z-index:33; display:flex'>
-                        <orov-newui-time-slim id="time-item-collapsed" style="margin:5px" event-emitter="{{cockpitEventEmitter}}"></orov-newui-time-slim>
-                        <orov-newui-power-slim id="power-item-collapsed" style="margin:5px" event-emitter="{{cockpitEventEmitter}}"></orov-newui-power-slim>
-                    </div>
-                </orov-video>
+            <div style='top:0px; left:0px; z-index:33; display:flex'>
+                 <orov-newui-time-slim id="time-item-collapsed" style="margin:5px" event-emitter="{{cockpitEventEmitter}}"></orov-newui-time-slim>
+                 <orov-newui-power-slim id="power-item-collapsed" style="margin:5px" event-emitter="{{cockpitEventEmitter}}"></orov-newui-power-slim>
+            </div>
+            <div class="tab">
+            <button class="tablinks" onclick="openCamera(event, 'Camera 1')" id="defaultOpen">Camera 1</button>
+            <button class="tablinks" onclick="openCamera(event, 'Camera 2')">Camera 2</button>
+            <button class="tablinks" onclick="openCamera(event, 'Camera 3')">Camera 3</button>
+            <button class="tablinks" onclick="openCamera(event, 'Camera 4')">Camera 4</button>
+            </div>
+            <div id="Camera 1" class=tabcontent>
+                <div id="newuiVideo" class="full-height">
+                    <orov-video1 id="camera01" border='1' style='width:100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
+                        <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
+                        <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
+                    </orov-video1>
+                </div>
+            </div>
+            <div id="Camera 2" class=tabcontent>
+                <div id="newuiVideo" class="full-height">
+                    <orov-video2 id="camera02" border='1' style='width: 100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
+                        <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
+                        <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
+                    </orov-video2>
+                </div>
+            </div>
+            <div id="Camera 3" class=tabcontent>
+                <div id="newuiVideo" class="full-height">
+                    <orov-video3 id="camera03" border='1' style='width: 100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
+                        <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
+                        <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
+                    </orov-video3>
+                </div>
+            </div>
+            <div id="Camera 4" class=tabcontent>
+                <div id="newuiVideo" class="full-height">
+                    <orov-video4 id="camera04" border='1' style='width: 100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
+                        <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
+                        <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
+                    </orov-video4>
+                </div>
             </div>
             <div id="newuiControlpad">
-                <fieldset>
-                    <legend>{{__('Heading')}}</legend>
-                    <orov-newui-compass class="center" heading="0" event-emitter="{{cockpitEventEmitter}}"></orov-newui-compass>
-                </fieldset>
                 <fieldset style="padding-bottom: 2em">
                     <legend>{{__('Depth')}}</legend>
                     <orov-newui-depth id="newui-depth" style="margin-top: 2.0em;" class="center control" event-emitter="{{cockpitEventEmitter}}"></orov-newui-depth>

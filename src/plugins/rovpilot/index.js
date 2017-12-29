@@ -19,7 +19,8 @@
       lift: 0,
       pitch: 0,
       roll: 0,
-      strafe: 0
+      strafe: 0,
+      ballast: 0
     };
     deps.cockpit.on('plugin.rovpilot.getState', function (callback) {
       var state = {
@@ -42,6 +43,9 @@
     });
     deps.cockpit.on('plugin.rovpilot.rates.setYaw', function (value) {
       self.positions.yaw = value;
+    });
+    deps.cockpit.on('plugin.rovpilot.rates.setBallast', function (value) {
+      self.positions.ballast = value;
     });
     deps.cockpit.on('plugin.rovpilot.rates.setLift', function (value) {
       self.positions.lift = value;
@@ -106,6 +110,7 @@
     this.positions.pitch = 0;
     this.positions.roll = 0;
     this.postitions.strafe = 0;
+    this.postitions.ballast = 0;
   };
   ROVPilot.prototype.sendPilotingData = function () {
     var self = this;
@@ -119,6 +124,7 @@
     controls.pitch = this.adjustForPowerLimit(positions.pitch);
     controls.roll = this.adjustForPowerLimit(positions.roll);
     controls.strafe = this.adjustForPowerLimit(positions.strafe);
+    controls.ballast = this.adjustForPowerLimit(positions.ballast);
     for (var i in positions) {
       if (controls[i] != this.priorControls[i]) {
         updateRequired = true;
