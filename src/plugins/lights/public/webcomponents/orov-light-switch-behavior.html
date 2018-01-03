@@ -9,7 +9,12 @@
       properties: {
       },
       on:function(){
-        this.eventEmitter.emit('plugin.lights.on')
+        var r = confirm("Are you sure you want to KILL this mission?");
+        if (r == true) {
+            this.eventEmitter.emit('plugin.lights.on')
+        } else {
+           this.eventEmitter.emit('plugin.lights.off')
+        }
       },
       off:function(){
         this.eventEmitter.emit('plugin.lights.off')
