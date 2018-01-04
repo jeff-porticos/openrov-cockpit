@@ -43,7 +43,6 @@
 
           emitter.on('plugin.controllerboard2x.systemPower.update', function(data){
             newData = data;
-
           });
 
           emitter.withHistory.on('settings-change.batteryDefinitions', function(settings){
@@ -76,21 +75,22 @@
           this.setstarboardBattery(this.starboardCurrent);
 
           this._dataThrottleInterval=setInterval(function(){
+            if (newData==null) return;
             if (newData==lastData) return;
             lastData=newData;
             var data=newData;
+            
               if ('voltage' in data.board){
                 self.setVoltage(parseFloat(data.board.voltage));
               };
 
               if ('port' in data.battery.current){
-                self.setportBattery(parseFloat(data.battery.current.port));
+                if (Number.isNaN(data.battery.current.port) == false) self.setportBattery(parseFloat(data.battery.current.port));
               };
 
               if ('starboard' in data.battery.current){
-                self.setstarboardBattery(parseFloat(data.battery.current.starboard));
+                if (Number.isNaN(data.battery.current.starboard) == false) self.setstarboardBattery(parseFloat(data.battery.current.starboard));
               };            
-            
           },500)
         },
         detached:function(){
