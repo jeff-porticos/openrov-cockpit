@@ -174,7 +174,7 @@
             }
 
             var portStr = origin.substring((origin.length-4));
-            if (portStr !== "8093") return;
+            if (portStr !== "8091") return;
 
             self.$$('#camera02').append(frame);
           })
@@ -196,7 +196,8 @@
           }
 
           var connectionMatch = connection == null ? true : connection.indexOf(registeredConnection.connectionType) > -1;
-          return ((registeredConnection.cameraID == 1) && (mimeType==playerType) && connectionMatch);
+          // return ((registeredConnection.cameraID == 1) && (mimeType==playerType) && connectionMatch);
+          return ((mimeType==playerType) && connectionMatch);
         },
 
         activeCamera(registeredConnection)

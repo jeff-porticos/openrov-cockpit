@@ -208,7 +208,8 @@
           }
 
           var connectionMatch = connection == null ? true : connection.indexOf(registeredConnection.connectionType) > -1;
-          return ((registeredConnection.cameraID == 0) && (mimeType==playerType) && connectionMatch);
+          // return ((registeredConnection.cameraID == 0) && (mimeType==playerType) && connectionMatch);
+          return ((mimeType==playerType) && connectionMatch);
         },
 
         activeCamera(registeredConnection)
