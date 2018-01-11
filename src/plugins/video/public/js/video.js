@@ -115,6 +115,7 @@
         }
 
         // Connect to websocket
+        console.log( "WEBSOCKET: Source Address: "  + data.sourceAddress + " WebSocket Address: " + address);
         ws[ data.sourceAddress ] = new WebSocket( address );
 
         // Set up ws listener to draw frames
@@ -151,6 +152,7 @@
         }
 
         // Connect to websocket
+        console.log( "SWEBSOCKET: Source Address: "  + data.sourceAddress + " WebSocket Address: " + address);
         ws[ data.sourceAddress ] = new WebSocket( address );
 
         // Set up ws listener to draw frames
@@ -170,6 +172,7 @@
         break;
 
       case 'http':
+        console.log( "http" );
         //pass on to MJPEG player that will connect over http
         data.sourceAddress = ResolveURL(data.relativeServiceUrl);
         self.cockpit.emit('CameraRegistration', data);
@@ -178,6 +181,7 @@
       case 'socket.io':
         //create the connection and pass data to the cocpkit bus for processing
         var connection;
+        console.log( "socket.io" );
         data.sourceAddress = ResolveURL(data.relativeServiceUrl);
         connection = window.io.connect(data.sourceAddress, { path: data.wspath });
         var handleInit = function (fn) {
@@ -202,6 +206,7 @@
         break;
 
       case 'rov':
+        console.log( "rov bus" );
         //data is comming over the rov bus, just pass it on to the cockpit bus
         var dataflowing = false;
         //this wont work for multiple cameras.

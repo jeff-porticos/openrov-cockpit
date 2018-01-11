@@ -48,3 +48,8 @@ src/plugins/telemetry/public/bower_components
 # Visual Studio Code generated files #
 ######################################
 .vscode/.browse*
+
+# Random stuff
+######################################
+*.swp
+*.sv
