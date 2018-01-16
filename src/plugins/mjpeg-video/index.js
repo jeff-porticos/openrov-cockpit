@@ -157,6 +157,12 @@
                 svStreamRegistration: new Listener( this.supervisor, 'stream.registration', false, ( serial, info ) =>
                 {
                     logger.info('Stream Registration: ' + JSON.stringify(info) );
+                    var relativeServiceUrl = null;
+                    if (info.relativeServiceUrl !== null) {
+                       relativeServiceUrl = info.relativeServiceUrl;
+                    } else {
+                       relativeServiceUrl = `:${info.port}`;
+                    }
 
                     this.globalBus.emit( 'CameraRegistration', 
                     {
@@ -165,7 +171,7 @@
                         resolution:         info.resolution,
                         framerate:          info.framerate, 
                         wspath:             "",
-                        relativeServiceUrl: `:${info.port}`,
+                        relativeServiceUrl: relativeServiceUrl,
                         sourcePort:         info.port,
                         sourceAddress:      "",
                         connectionType:     info.connectionType,

@@ -174,7 +174,10 @@
             }
 
             var portStr = origin.substring((origin.length-4));
-            if (portStr !== "8091") return;
+            if (portStr !== "8092") return;
+
+            var hostStr = origin.substring((origin.length-6),(origin.length-5));
+            if (hostStr.toLowerCase() !== "a") return;
 
             self.$$('#camera02').append(frame);
           })

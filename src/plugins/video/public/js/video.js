@@ -81,12 +81,15 @@
     var CameraRegistrations = {};
     var ws = {};
 
+    console.log( "video.js: listen" );
+
     this.rov.withHistory.on('CameraRegistration', function (data) 
     {
       //TODO: More robust handling of duplicate CameraRegistration messages.  If the Camera
       //already is setup, we want to ignore.  But we also want to handle multiple Cameras
       //and camera's that change settings.
       data.sourceAddress = ResolveURL( data.relativeServiceUrl );
+      console.log( "video.js: CameraRegistration" );
 
       if( CameraRegistrations[ data.sourceAddress ] ) 
       {
@@ -121,6 +124,7 @@
         // Set up ws listener to draw frames
         ws[ data.sourceAddress ].onmessage = function( evt ) 
         {
+            console.log( "WEBSOCKET: onmessage ");
             // Emit packet on the cockpit bus
             self.cockpit.emit( 'x-motion-jpeg.data', evt.data, evt.origin );
         };
@@ -158,6 +162,7 @@
         // Set up ws listener to draw frames
         ws[ data.sourceAddress ].onmessage = function( evt ) 
         {
+            console.log( "SWEBSOCKET: onmessage ");
             // Emit packet on the cockpit bus
             self.cockpit.emit( 'x-motion-jpeg.data', evt.data, evt.origin );
         };
