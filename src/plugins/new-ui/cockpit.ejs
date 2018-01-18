@@ -133,6 +133,8 @@
         // Show the current tab, and add an "active" class to the button that opened the tab
         document.getElementById(cameraName).style.display = "inline-block";
         evt.currentTarget.className += " active";
+        
+        window.cockpit.emit("activeCameraTab", cameraName );
     }
 
 </script>

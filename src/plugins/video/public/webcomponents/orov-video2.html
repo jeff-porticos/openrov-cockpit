@@ -47,6 +47,7 @@
           canvas:               { type: Object, observer: '_canvasChanged' },
           videoMimeType:        { type: String },
           cameraName:           { type: String },
+          activeCameraName:     { type: String, value: "Camera 1" },
           cameraID:             { type: Number },
           location:             { type: String },
           showStats:            { type: Boolean, value: function(){ return false; } },
@@ -116,6 +117,11 @@
             self.set('_registerdConnection',data);
           });
 
+          emitter.on('activeCameraTab',function(data)
+          {
+            self.activeCameraName = data;
+          });
+
           //If we have segmented mp4 data streaming for this camera,
           //we go ahead and request the initalization packet and
           //init the camera before appending the raw data.
@@ -173,11 +179,25 @@
               return;
             }
 
+            if (self.activeCameraName !== "Camera 2")
+            {
+              self.$$('#camera02').append(null);
+              return;
+            }
+
             var portStr = origin.substring((origin.length-4));
-            if (portStr !== "8092") return;
+            if (portStr !== "8092")
+            {
+              self.$$('#camera02').append(null);
+              return;
+            }
 
             var hostStr = origin.substring((origin.length-6),(origin.length-5));
-            if (hostStr.toLowerCase() !== "a") return;
+            if (hostStr.toLowerCase() !== "a")
+            {
+              self.$$('#camera02').append(null);
+              return;
+            }
 
             self.$$('#camera02').append(frame);
           })

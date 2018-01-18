@@ -27,6 +27,10 @@
                     fps: 
                     {
                         type: Number
+                    },
+                    cancel:
+                    {
+                        type: Number
                     }
                 },
                 behaviors: 
@@ -91,7 +95,8 @@
                                 verticalMargin = ( canvas.height - proportionalHeight ) / 2;
                             }
 
-                            ctx.drawImage( image, 0, verticalMargin, canvas.width, proportionalHeight );
+                            // ctx.drawImage( image, 0, verticalMargin, canvas.width, proportionalHeight );
+                            ctx.drawImage( image, 0, 0, canvas.width, canvas.height );
                             
                             self._drawCounter++;
                             URL.revokeObjectURL( url );
@@ -111,7 +116,11 @@
                 append: function(frame) 
                 {
                     var self = this;
-                    window.requestAnimationFrame( function()
+                    if (frame === null) {
+                        if (this.cancel !== undefined) window.cancelAnimationFrame(this.cancel);
+                        return;
+                    } 
+                    self.cancel = window.requestAnimationFrame( function()
                     {
                         self._drawFrame(frame);
                     });
