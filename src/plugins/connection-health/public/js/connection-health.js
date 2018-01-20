@@ -40,6 +40,10 @@
       }, 0);
       self.cockpit.emit('plugin.connection-health.ping-latency', self.pingtime);
     });
+    this.cockpit.withHistory.on('status', function (status) {
+      if ('LEAK' in status) 
+         console.log("LEAK: " + status.LEAK);
+    });
   };
   window.Cockpit.plugins.push(ConnectionHealth);
 }(window));

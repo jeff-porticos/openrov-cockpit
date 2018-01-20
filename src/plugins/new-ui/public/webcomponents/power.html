@@ -151,10 +151,12 @@
 
         },
         setLeftBattery: function (current) {
+          if (isNaN(current)) return;
           this.setCurrent(this.$.left, this.leftIndicator, current);
           this.leftCurrent = current;
         },
         setRightBattery: function (current) {
+          if (isNaN(current)) return;
           this.setCurrent(this.$.right, this.rightIndicator, current);
           this.rightCurrent = current;
         },
@@ -181,8 +183,8 @@
 
         setVoltage: function (voltage) 
         {
+          if (isNaN(voltage)) return;
           voltage = parseFloat(voltage);
-
           this.set("voltage",voltage);
 
           var percent;
@@ -248,7 +250,7 @@
                 self.setRightBattery(parseFloat(data.battery.current.starboard));
               };            
             
-          },500)
+          },2000)
         },
         detached:function(){
           clearInterval(this._dataThrottleInterval);          
