@@ -48,8 +48,9 @@ function Bridge(socket_id) {
     });
 
     serialPort.on('data', function (data) {
-           // console.log("data: " + data); 
+    //     console.log("data: " + data); 
            var status = reader.parseStatus(data);
+           if (status == null) return;
            bridge.emit('status', status);
     //     if (emitRawSerial) {
     //        bridge.emit('serial-recieved', data + '\n');
@@ -104,6 +105,7 @@ var StatusReader = function () {
   var reader = new EventEmitter();
   var currTemp = 20;
   var currDepth = 0;
+  var collectedString = "";
   var processSettings = function processSettings(parts) {
     var setparts = parts.split(',');
     var settingsCollection = {};
@@ -126,12 +128,24 @@ var StatusReader = function () {
     }
   };
   reader.parseStatus = function parseStatus(rawStatus) {
+    var position = 0;
+    var status = {};
     // console.log("rawStatus: " + rawStatus);
     var rawStatusString = rawStatus.toString();
-    var parts = rawStatusString.split(';');
-    var status = {};
+    // check if we have a complete "ENDUPDATE:1;" in this string yet
+    // otherwise, wait for it
+    collectedString = collectedString.concat(rawStatusString);
+    // console.log("collectedString: " + collectedString);
+    if ((position = collectedString.search("ENDUPDATE:1;")) == -1) return status;
+    // now we have ENDUPDATE:1;
+    // let's take any characters after ENDUPDATE:1; and save them for next time
+    var processString = collectedString.substring(0,position+"ENDUPDATE:1;".length);
+    collectedString = collectedString.substring(position+"ENDUPDATE:1;".length+1);
+    // console.log("collectedString: " + collectedString);
+    var parts = processString.split(';');
     for (var i = 0; i < parts.length; i++) {
       var subParts = parts[i].split(':');
+      // console.log("subParts[0]: " + subParts[0] + " subParts[1]: " + subParts[1]);
       switch (subParts[0]) {
       case '*settings':
         status.settings = processSettings(subParts[1]);
