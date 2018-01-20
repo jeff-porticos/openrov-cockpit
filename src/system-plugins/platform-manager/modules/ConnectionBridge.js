@@ -50,7 +50,7 @@ function Bridge(socket_id) {
     serialPort.on('data', function (data) {
     //     console.log("data: " + data); 
            var status = reader.parseStatus(data);
-           if (status.isEmpty()) return;
+           if (isEmpty(status)) return;
            bridge.emit('status', status);
     //     if (emitRawSerial) {
     //        bridge.emit('serial-recieved', data + '\n');
