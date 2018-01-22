@@ -30,6 +30,12 @@
         foundData = true;
       }
 
+      if ('CHARGE' in data)
+      {
+        result.battery.charge = parseFloat(data.CHARGE);
+        foundData = true;
+      }
+
       if ('BT1I' in data) 
       {
         result.battery.current.port = parseFloat(data.BT1I);
