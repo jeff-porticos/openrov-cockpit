@@ -168,9 +168,10 @@ var StatusReader = function () {
     // now we have ENDUPDATE:1;
     // let's take any characters after ENDUPDATE:1; and save them for next time
     var processString = collectedString.substring(0,position+"ENDUPDATE:1;".length);
-    collectedString = collectedString.substring(position+"ENDUPDATE:1;".length+1);
+    collectedString = collectedString.substring(position+"ENDUPDATE:1;".length);
     // console.log("collectedString: " + collectedString);
     var parts = processString.split(';');
+    // console.log("length: " + parts.length + " parts: " + parts);
     for (var i = 0; i < parts.length; i++) {
       var subParts = parts[i].split(':');
       // console.log("subParts[0]: " + subParts[0] + " subParts[1]: " + subParts[1]);
