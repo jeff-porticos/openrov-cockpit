@@ -15,6 +15,7 @@
       0
     ];
     this.pingAvg = 0;
+    this.leaking = 0;
   };
   //plugin.connection-health.connect-state
   ConnectionHealth.prototype.listen = function listen() {
@@ -25,7 +26,7 @@
       var _starttime = performance.now();
       self.cockpit.emit('ping', _starttime);
       self.cockpit.rov.emit('sys.ping', _starttime);
-      var isConnected = _starttime - lastpong <= 3000;
+      var isConnected = _starttime - lastpong <= 5000;
       self.cockpit.emit('plugin.connection-health.state', { connected: isConnected });
     }, 1000);
     this.cockpit.rov.on('sys.pong', function (id) {
@@ -41,8 +42,12 @@
       self.cockpit.emit('plugin.connection-health.ping-latency', self.pingtime);
     });
     this.cockpit.withHistory.on('status', function (status) {
-      if ('LEAK' in status) 
+      if ('LEAK' in status) {
          console.log("LEAK: " + status.LEAK);
+         self.leaking = status.LEAK;
+      }
+      var leaking = (self.leaking == 1);
+      self.cockpit.emit('plugin.orov-leak-status.state', leaking);
     });
   };
   window.Cockpit.plugins.push(ConnectionHealth);
