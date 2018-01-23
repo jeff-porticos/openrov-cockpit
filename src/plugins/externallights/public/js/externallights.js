@@ -14,6 +14,7 @@
 
             self.currentPower = 0.0;  // As reported by the local model
             self.targetPower = 0.0;   // As requested by this plugin
+            self.selectedLight = 0;   
 
             // Alternate representations of targetPower
             self.currentStep = 0;     
@@ -129,6 +130,12 @@
 
             // Send request to local model
             this.cockpit.rov.emit( 'plugin.externalLights.setTargetPower', this.targetPower );
+        }
+
+        updateFromSelectedLight()
+        {
+            // Send request to local model
+            this.cockpit.rov.emit( 'plugin.externalLights.setSelectedLight', this.selectedLight );
         }
 
         updateFromPower()
@@ -290,6 +297,17 @@
                 self.targetPower = power;
                 self.updateFromPower();
             });
+
+            this.cockpit.on('plugin.externalLights.setSelectedLight', function( selectedLight )
+            {
+                // a string "Camera N" will be delivered
+                console.log("selectedLight: " + selectedLight);
+                var numberStr = selectedLight.substr(selectedLight.length -1)
+                // Set new active LED
+                self.selectedLight =  Number(numberStr);
+                self.updateFromSelectedLight();
+            });
+
         };
     };
 

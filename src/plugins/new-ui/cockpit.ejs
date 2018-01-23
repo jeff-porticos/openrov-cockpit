@@ -135,6 +135,7 @@
         evt.currentTarget.className += " active";
         
         window.cockpit.emit("activeCameraTab", cameraName );
+        window.cockpit.emit("plugin.externalLights.setSelectedLight", cameraName );
     }
 
 </script>

@@ -26,12 +26,27 @@
             this.targetPower          = 0;
             this.targetPower_enc      = 0;
             this.mcuTargetPower_enc   = 0;
+            this.selectedLight        = 0;
+            this.mcuSelectedLight     = 0;
 
             var self = this;
 
             this.SyncTargetPower = new Periodic( 100, "timeout", function()
             {
                 var synced = true;
+
+                // update selected active LED
+                if( self.mcuSelectedLight !== self.selectedLight )
+                {
+                    synced = false;
+
+                    // Encode floating point to integer representation
+                    var command = 'elights_select(' + self.selectedLight + ')';
+
+                    // Emit command to mcu
+                    self.globalBus.emit( 'mcu.SendCommand', command );
+                }
+
 
                 // Send target power to MCU until it responds with affirmation
                 if( self.mcuTargetPower_enc !== self.targetPower_enc )
@@ -67,6 +82,7 @@
 
                     // Enable API
                     self.listeners.setTargetPower.enable();
+                    self.listeners.setSelectedLight.enable();
                 }),
 
                 mcuStatus: new Listener( this.globalBus, 'mcu.status', false, function( data )
@@ -79,6 +95,12 @@
 
                         // Emit on cockpit bus for UI purposes
                         self.cockpitBus.emit( 'plugin.externalLights.currentPower', power );
+                    }
+
+                    if( 'elights_select' in data ) 
+                    {
+                        // Save for sync validation purposes
+                        self.mcuSelectedLight = parseInt( data.elights_select );
                     }
 
                     // Target light power
@@ -99,10 +121,33 @@
                 {
                     // Set new target Power
                     self.setTargetPower( powerIn );
+                }),
+
+                setSelectedLight: new Listener( this.cockpitBus, 'plugin.externalLights.setSelectedLight', false, function( selectedLight )
+                {
+                    // the original string is now a number
+                    // Set new active LED
+                    self.setSelectedLight( selectedLight );
                 })
             }
         }
 
+        setSelectedLight( selectedLight )
+        {
+            var self = this;
+
+            // Validate input
+            if( isNaN( selectedLight ) )
+            {
+              // Ignore
+              return;
+            }
+
+            self.selectedLight = selectedLight;
+
+            self.SyncTargetPower.start();
+        }
+        
         setTargetPower( powerIn )
         {
             var self = this;
@@ -144,6 +189,7 @@
           this.listeners.settings.disable();
           this.listeners.mcuStatus.disable();
           this.listeners.setTargetPower.disable();
+          this.listeners.setSelectedLight.disable();
         }
 
         getSettingSchema()
