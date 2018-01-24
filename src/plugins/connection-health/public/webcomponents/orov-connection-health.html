@@ -31,12 +31,12 @@
       <paper-tooltip for="orovLeakStatus">
         {{__("STIR Leak Detection")}}
       </paper-tooltip>
-        <div id="orovLeakStatus" class$="{{computedLeakClass(isLeaky)}}"></div>
+        <div id="orovLeakStatus" class$="{{computedLeakClass(isLeaky)}}">LEAK</div>
 
       <paper-tooltip for="connectionHealth">
         {{__("Device to STIR round trip latency")}}:{{_formatms(latency)}}{{__('ms')}}
       </paper-tooltip>
-        <div id="connectionHealth" class$="{{computedClass(isConnected)}}"></div>
+        <div id="connectionHealth" class$="{{computedClass(isConnected)}}">COMMS</div>
 
   </template>
   <script>
