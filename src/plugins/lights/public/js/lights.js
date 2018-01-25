@@ -79,21 +79,9 @@
             {
                 keyboard: 
                 {
-                    ".": { type: "button",
-                           action: 'plugin.lights.stepPositive' },
-                    ",": { type: "button",
-                           action: 'plugin.lights.stepNegative' },
-                    "/": { type: "button",
-                           action: 'plugin.lights.toggle' },
                 },
                 gamepad: 
                 {
-                    "DPAD_RIGHT": { type: "button",
-                           action: 'plugin.lights.stepPositive' },
-                    "DPAD_LEFT": { type: "button",
-                           action: 'plugin.lights.stepNegative' },
-                    "Y": { type: "button",
-                           action: 'plugin.lights.toggle' }
                 }
             };
                

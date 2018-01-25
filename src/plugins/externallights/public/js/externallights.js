@@ -91,7 +91,17 @@
                            action: "plugin.externalLights.stepNegative" },
                     "shift+o": { type: "button",
                            action: "plugin.externalLights.toggle" },
+                },
+                gamepad:
+                {
+                    "DPAD_RIGHT": { type: "button",
+                           action: 'plugin.externalLights.stepPositive' },
+                    "DPAD_LEFT": { type: "button",
+                           action: 'plugin.externalLights.stepNegative' },
+                    "Y": { type: "button",
+                           action: 'plugin.externalLights.toggle' }
                 }
+
             };
         };
 
