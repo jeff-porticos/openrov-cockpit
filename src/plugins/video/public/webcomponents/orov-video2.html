@@ -9,14 +9,14 @@
   </style>
 
   <template>
-    <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','ws',_registerdConnection)}}" >
-      <mjpeg-packet-video2 id="camera02" border='1' style='width: 100%; height:100%'>
+    <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','ws',_registerdConnection)}}">
+      <mjpeg-packet-video2 id="camera02" border='1' style='width: 100%; height:100%' event-emitter="{{cockpitEventEmitter}}">
         <content></content>
       </mjpeg-packet-video2>
     </template>
 
-    <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','wss',_registerdConnection)}}" >
-      <mjpeg-packet-video2 id="camera02" border='1' style='width: 100%; height:100%'>
+    <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','wss',_registerdConnection)}}">
+      <mjpeg-packet-video2 id="camera02" border='1' style='width: 100%; height:100%' event-emitter="{{cockpitEventEmitter}}">
         <content></content>
       </mjpeg-packet-video2>
     </template>        
@@ -119,7 +119,14 @@
 
           emitter.on('activeCameraTab',function(data)
           {
+            if (self._registerdConnection === null) return;
             self.activeCameraName = data;
+            if (self.activeCameraName === "Camera 2") {
+               self.shortCircuit = false;
+            } else {
+               self.shortCircuit = true;
+            }
+            emitter.emit('activeCameraTabRefresh',data);
           });
 
           //If we have segmented mp4 data streaming for this camera,
@@ -188,14 +195,12 @@
             var portStr = origin.substring((origin.length-4));
             if (portStr !== "8092")
             {
-              self.$$('#camera02').append(null);
               return;
             }
 
             var hostStr = origin.substring((origin.length-6),(origin.length-5));
             if (hostStr.toLowerCase() !== "a")
             {
-              self.$$('#camera02').append(null);
               return;
             }
 

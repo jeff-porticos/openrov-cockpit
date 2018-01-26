@@ -22,13 +22,13 @@
     </template>
 
     <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','ws',_registerdConnection)}}" >
-      <mjpeg-packet-video1 id="camera01" border='1' style='width: 100%; height:100%'>
+      <mjpeg-packet-video1 id="camera01" border='1' style='width: 100%; height:100%' event-emitter="{{cockpitEventEmitter}}">
         <content></content>
       </mjpeg-packet-video1>
     </template>
 
     <template is="dom-if" if="{{displayPlayer(videoMimeType,'video/x-motion-jpeg','wss',_registerdConnection)}}" >
-      <mjpeg-packet-video1 id="camera01" border='1' style='width: 100%; height:100%'>
+      <mjpeg-packet-video1 id="camera01" border='1' style='width: 100%; height:100%' event-emitter="{{cockpitEventEmitter}}">
         <content></content>
       </mjpeg-packet-video1>
     </template>        
@@ -131,7 +131,14 @@
 
           emitter.on('activeCameraTab',function(data)
           {
+            if (self._registerdConnection === null) return;
             self.activeCameraName = data;
+            if (self.activeCameraName === "Camera 1") {
+               self.shortCircuit = false;
+            } else {
+               self.shortCircuit = true;
+            }
+            emitter.emit('activeCameraTabRefresh',data);
           });
 
           //If we have segmented mp4 data streaming for this camera,
@@ -200,14 +207,12 @@
             var portStr = origin.substring((origin.length-4));
             if (portStr !== "8091")
             {
-              self.$$('#camera01').append(null);
               return;
             }
 
             var hostStr = origin.substring((origin.length-6),(origin.length-5));
             if (hostStr.toLowerCase() !== "a")
             {
-              self.$$('#camera01').append(null);
               return;
             }
 

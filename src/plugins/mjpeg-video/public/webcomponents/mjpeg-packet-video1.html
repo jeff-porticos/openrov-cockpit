@@ -24,6 +24,7 @@
                 is: 'mjpeg-packet-video1',
                 properties: 
                 {
+                    stopped: { type: Boolean, value: function(){ return false; } },
                     fps: 
                     {
                         type: Number
@@ -35,6 +36,7 @@
                 },
                 behaviors: 
                 [
+                    namespace('behaviors').oROVStandard,
                     Polymer.IronResizableBehavior
                 ],                
                 listeners: 
@@ -49,6 +51,19 @@
                     canvas.width    = parseInt( style.getPropertyValue( 'width' ) );
                     canvas.height   = parseInt( style.getPropertyValue( 'height' ) );
                 }, 
+                registerEmitterHandlers: function(emitter)
+                {
+                  var self      = this;
+                  self.emitter  = emitter;
+                  emitter.on('activeCameraTabRefresh',function(data)
+                  {
+                    var activeCameraName = data;
+                    if (activeCameraName === "Camera 1") {
+                        self._onIronResize();
+                    }
+                  });
+
+                },
                 detached: function() 
                 {
                     clearInterval( this._OncePerSecondInterval );
@@ -115,11 +130,17 @@
                  */
                 append: function(frame) 
                 {
+                    var canvas  = this.$.camera11;
                     var self = this;
                     if (frame === null) {
+                        this.stopped = true;
                         if (this.cancel !== undefined) window.cancelAnimationFrame(this.cancel);
                         return;
                     } 
+                    if (this.stopped === true) {
+                        self._onIronResize();
+                        this.stopped = false;
+                    }
                     self.cancel = window.requestAnimationFrame( function()
                     {
                         self._drawFrame(frame);

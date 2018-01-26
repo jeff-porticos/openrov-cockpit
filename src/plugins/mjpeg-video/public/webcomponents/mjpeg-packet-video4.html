@@ -10,7 +10,7 @@
     </style>
 
     <template>
-        <div id="videocontainer4" style="display:inline-block; height:100%; width:100%; position:relative;" on-hover="">
+        <div id="videocontainer4" style="display:inline-block; height:100%; width:100%; position:relative;" on-hover=""> 
             <canvas id="camera14"></canvas>
             <content></content>
         </div>
@@ -24,6 +24,7 @@
                 is: 'mjpeg-packet-video4',
                 properties: 
                 {
+                    stopped: { type: Boolean, value: function(){ return false; } },
                     fps: 
                     {
                         type: Number
@@ -35,6 +36,7 @@
                 },
                 behaviors: 
                 [
+                    namespace('behaviors').oROVStandard,
                     Polymer.IronResizableBehavior
                 ],                
                 listeners: 
@@ -49,6 +51,18 @@
                     canvas.width    = parseInt( style.getPropertyValue( 'width' ) );
                     canvas.height   = parseInt( style.getPropertyValue( 'height' ) );
                 }, 
+                registerEmitterHandlers: function(emitter)
+                {
+                  var self      = this;
+                  self.emitter  = emitter;
+                  emitter.on('activeCameraTabRefresh',function(data)
+                  {
+                    var activeCameraName = data;
+                    if (activeCameraName === "Camera 4") {
+                        self._onIronResize();
+                    }
+                  });
+                },
                 detached: function() 
                 {
                     clearInterval( this._OncePerSecondInterval );
@@ -117,8 +131,13 @@
                 {
                     var self = this;
                     if (frame === null) {
+                        this.stopped = true;
                         if (this.cancel !== undefined) window.cancelAnimationFrame(this.cancel);
                         return;
+                    } 
+                    if (this.stopped === true) {
+                        self._onIronResize();
+                        this.stopped = false;
                     }
                     self.cancel = window.requestAnimationFrame( function()
                     {
