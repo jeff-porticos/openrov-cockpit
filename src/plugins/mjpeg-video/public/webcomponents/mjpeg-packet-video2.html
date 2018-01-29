@@ -131,8 +131,8 @@
                 {
                     var self = this;
                     if (frame === null) {
+                        if ((this.stopped === false) && (this.cancel !== undefined)) window.cancelAnimationFrame(this.cancel);
                         this.stopped = true;
-                        if (this.cancel !== undefined) window.cancelAnimationFrame(this.cancel);
                         return;
                     } 
                     if (this.stopped === true) {
