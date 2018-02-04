@@ -200,7 +200,12 @@
             }
 
             var hostStr = origin.substring((origin.length-6),(origin.length-5));
-            if (hostStr.toLowerCase() !== "b")
+            if ((hostStr.toLowerCase() !== "b") &&
+                (hostStr.toLowerCase() !== "0") &&
+                (hostStr.toLowerCase() !== "2") &&
+                (hostStr.toLowerCase() !== "4") &&
+                (hostStr.toLowerCase() !== "6") &&
+                (hostStr.toLowerCase() !== "8"))
             {
               return;
             }

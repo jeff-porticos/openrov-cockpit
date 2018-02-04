@@ -212,6 +212,10 @@
           waterType: {
             type: String,
             value: function(){return 'Salt';}
+          },
+          forceUpdate: {
+            type: Boolean,
+            value: false
           }
         },
         behaviors: [namespace('behaviors').oROVStandard],
@@ -252,7 +256,11 @@
         },
         attached: function(){
           this._dataThrottleInterval=setInterval(function(){
-              if (newState == lastState){return;};
+              if ((newState == lastState) && (self.forceUpdate === false)) {return;};
+              if (self.forceUpdate === true) {
+                self.set('depth',0);//.toFixed(1);
+              }
+              self.forceUpdate = false;
               lastState = newState
               var data = lastState;
               if ('depth' in data) {
@@ -340,6 +348,8 @@
           {
             self.set("depthUnit", "m");
           }
+          // force display update
+          self.forceUpdate = true;
           
         }
       });

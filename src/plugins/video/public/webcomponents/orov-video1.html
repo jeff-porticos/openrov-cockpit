@@ -212,7 +212,12 @@
             }
 
             var hostStr = origin.substring((origin.length-6),(origin.length-5));
-            if (hostStr.toLowerCase() !== "a")
+            if ((hostStr.toLowerCase() !== "a") &&
+                (hostStr.toLowerCase() !== "1") &&
+                (hostStr.toLowerCase() !== "3") &&
+                (hostStr.toLowerCase() !== "5") &&
+                (hostStr.toLowerCase() !== "7") &&
+                (hostStr.toLowerCase() !== "9"))
             {
               return;
             }

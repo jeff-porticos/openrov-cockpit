@@ -150,8 +150,8 @@
       //cameras that are choosen for recording
       self.logMP4Video('x-h264-video.data', data);
     });
-    this.cockpit.on('x-motion-jpeg.data', function (data) {
-      self.logMPVideo('x-motion-jpeg.data', data);
+    this.cockpit.on('x-motion-jpeg.data', function (data, address) {
+      self.logMPVideo('x-motion-jpeg.data', data, address);
     });
     this.cockpit.on('plugin-blackbox-export', function (options) {
       self.exportData(options);
@@ -442,7 +442,7 @@
   };
   var initFrame = null;
   window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
-  Blackbox.prototype.logMPVideo = function logMPVideo(event, data) {
+  Blackbox.prototype.logMPVideo = function logMPVideo(event, data, address) {
     if (!this.recording) {
       return;
     }
