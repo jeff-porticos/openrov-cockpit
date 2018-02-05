@@ -104,7 +104,7 @@
         border: 1px solid #ccc;
         border-top: none;
         height: 100%;
-        width: 100%;
+        width: 90%;
     }
 
 </style>
@@ -113,6 +113,22 @@
 
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
+
+    function convertName( inName ) {
+        if (inName.localeCompare("Front Camera") === 0) {
+           return("Camera 1");
+        }
+        if (inName.localeCompare("Side Camera") === 0) {
+           return("Camera 2");
+        }
+        if (inName.localeCompare("Top Camera") === 0) {
+           return("Camera 3");
+        }
+        if (inName.localeCompare("Bottom Camera") === 0) {
+           return("Camera 4");
+        }
+        return("");
+    }
 
     function openCamera(evt, cameraName) {
         // Declare all variables
@@ -134,8 +150,9 @@
         document.getElementById(cameraName).style.display = "inline-block";
         evt.currentTarget.className += " active";
         
-        window.cockpit.emit("activeCameraTab", cameraName );
-        window.cockpit.emit("plugin.externalLights.setSelectedLight", cameraName );
+        var baseName = convertName(cameraName);
+        window.cockpit.emit("activeCameraTab", baseName );
+        window.cockpit.emit("plugin.externalLights.setSelectedLight", baseName );
     }
 
 </script>
@@ -150,44 +167,40 @@
                  <orov-newui-power-slim id="power-item-collapsed" style="margin:5px" event-emitter="{{cockpitEventEmitter}}"></orov-newui-power-slim>
             </div>
             <div class="tab">
-            <button class="tablinks" onclick="openCamera(event, 'Camera 1')" id="defaultOpen">Camera 1</button>
-            <button class="tablinks" onclick="openCamera(event, 'Camera 2')">Camera 2</button>
-            <button class="tablinks" onclick="openCamera(event, 'Camera 3')">Camera 3</button>
-            <button class="tablinks" onclick="openCamera(event, 'Camera 4')">Camera 4</button>
+            <button class="tablinks" onclick="openCamera(event, 'Front Camera')" id="defaultOpen">Front Camera</button>
+            <button class="tablinks" onclick="openCamera(event, 'Side Camera')">Side Camera</button>
+            <button class="tablinks" onclick="openCamera(event, 'Top Camera')">Top Camera</button>
+            <button class="tablinks" onclick="openCamera(event, 'Bottom Camera')">Bottom Camera</button>
             </div>
-            <div id="Camera 1" class=tabcontent>
+            <div id="Front Camera" class=tabcontent>
                 <div id="newuiVideo" class="full-height">
                     <orov-video1 id="camera01" border='1' style='width:100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
-                        <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
-                        <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
                     </orov-video1>
                 </div>
             </div>
-            <div id="Camera 2" class=tabcontent>
+            <div id="Side Camera" class=tabcontent>
                 <div id="newuiVideo" class="full-height">
                     <orov-video2 id="camera02" border='1' style='width: 100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
-                        <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
-                        <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
                     </orov-video2>
                 </div>
             </div>
-            <div id="Camera 3" class=tabcontent>
+            <div id="Top Camera" class=tabcontent>
                 <div id="newuiVideo" class="full-height">
                     <orov-video3 id="camera03" border='1' style='width: 100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
-                        <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
-                        <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
                     </orov-video3>
                 </div>
             </div>
-            <div id="Camera 4" class=tabcontent>
+            <div id="Bottom Camera" class=tabcontent>
                 <div id="newuiVideo" class="full-height">
                     <orov-video4 id="camera04" border='1' style='width: 100%; height:100%; position:relative' location='forward' event-emitter="{{cockpitEventEmitter}}">
-                        <div id='twitchembed' style='position:absolute; top:0px; left:0px; z-index:33;'></div>
-                        <orov-twitch-stream-status style='position:absolute; top:0px; left:0px; z-index:33;' event-emitter="{{cockpitEventEmitter}}"></orov-twitch-stream-status>
                     </orov-video4>
                 </div>
             </div>
             <div id="newuiControlpad">
+                <fieldset id="power-item">
+                    <legend>{{__('Battery')}}</legend>
+                    <orov-newui-power id="power" event-emitter="{{cockpitEventEmitter}}"></orov-newui-power>
+                </fieldset>
                 <fieldset style="padding-bottom: 2em">
                     <legend>{{__('Depth')}}</legend>
                     <orov-newui-depth id="newui-depth" style="margin-top: 2.0em;" class="center control" event-emitter="{{cockpitEventEmitter}}"></orov-newui-depth>
@@ -199,10 +212,6 @@
                 <fieldset>
                     <legend>{{__('Switches')}}</legend>
                     <orov-newui-switches class="center" event-emitter="{{cockpitEventEmitter}}"></orov-newui-switches>
-                </fieldset>
-                <fieldset id="power-item">
-                    <legend>{{__('Battery')}}</legend>
-                    <orov-newui-power id="power" event-emitter="{{cockpitEventEmitter}}"></orov-newui-power>
                 </fieldset>
                 <fieldset id="time-item">
                     <legend>{{__('Time')}}</legend>

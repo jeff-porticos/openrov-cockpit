@@ -60,6 +60,7 @@
           videoMimeType:        { type: String },
           cameraName:           { type: String },
           activeCameraName:     { type: String, value: "Camera 1" },
+          associatedPort:       { type: String, value: "8092" },
           cameraID:             { type: Number },
           location:             { type: String },
           showStats:            { type: Boolean, value: function(){ return false; } },
@@ -206,7 +207,7 @@
             }
 
             var portStr = origin.substring((origin.length-4));
-            if (portStr !== "8091")
+            if (portStr !== self.associatedPort)
             {
               return;
             }
