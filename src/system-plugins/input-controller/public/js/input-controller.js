@@ -554,14 +554,13 @@
       self.cockpit = cockpit;
       self.gamepadHardware = new HTML5Gamepad();
       
-      self.currentTime = new Date();
-
       //Ignore until time
       self.ignoreInputUntil = 0;
 
       //Bindingsadding
       self.gamepadHardware.bind(HTML5Gamepad.Event.AXIS_CHANGED, function(e) {
-        if(self.currentTime.getTime() < self.ignoreInputUntil)
+        var currentTime = + new Date();
+        if(currentTime < self.ignoreInputUntil)
         {
           //Avoids inacurrate readings when the gamepad has just been connected
           return;
@@ -617,7 +616,8 @@
       });
 
       self.gamepadHardware.bind(HTML5Gamepad.Event.CONNECTED, function(device) {
-        self.ignoreInputUntil = self.currentTime + 1000;
+        var currentTime = + new Date();
+        self.ignoreInputUntil = currentTime + 1000;
         log("Gamepad connected", device);
       });
 

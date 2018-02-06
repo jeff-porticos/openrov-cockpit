@@ -301,7 +301,7 @@ TODO:  Change the interface for motors to -1/1 with deadzone accounted for to tr
         emitter.withHistory.on('plugin.rovpilot.controls', function (data) {
           self.setVertical(Number(data.vertical));
           self.setPort(Number(data.port));
-          self.setStarboard(Number(data.starbord));
+          self.setStarboard(Number(data.starboard));
         });
         emitter.emit('plugin.rovpilot.getState',function(state){
           if (state.powerLevel !== undefined){
@@ -317,9 +317,11 @@ TODO:  Change the interface for motors to -1/1 with deadzone accounted for to tr
         template.clone().appendTo($(this.$.starboard));
 
         var self = this;
-        self.setVertical(1500);
-        self.setPort(1500);
-        self.setStarboard(1500);
+        // zero point is 500
+        // used to be 1500
+        self.setVertical(500);
+        self.setPort(500);
+        self.setStarboard(500);
 
       },
       setPowerLevel: function (level) {
@@ -375,15 +377,16 @@ TODO:  Change the interface for motors to -1/1 with deadzone accounted for to tr
         // Grab the current maximum drawn throttle value
         var maxHeight = $(this.$.port).find('#maxThrottle rect').attr('height');
 
-        //Zero point as reported by the throttle value passed in is 1500
+        // Zero point as reported by the throttle value passed in is 500
+        // used to be 1500
         var height = maxHeight/2.0;
-        if( value == 1500 )
+        if( value == 500 )
         {
           height = 0;
         } 
         
         var y = 815 / 2 - height;
-        if( value < 1500 )
+        if( value < 500 )
         {
           y = 815 / 2;
         }

@@ -365,7 +365,7 @@
 
   };
   /**
- * Sets up filefox platform.
+ * Sets up firefox platform.
  */
   Gamepad.prototype._setupFirefox = function () {
     var self = this;
@@ -470,9 +470,7 @@
  */
   Gamepad.prototype._resolveControllerType = function (gamepad) {
     var id = gamepad.id.toLowerCase();
-    if (gamepad.mapping == 'standard') {
-      return Gamepad.Type.STANDARD;
-    } else if (id.indexOf('rock candy') !== -1) {
+    if (id.indexOf('rock candy') !== -1) {
       return Gamepad.Type.ROCKCANDY;
     } else if (id.indexOf('xbox') !== -1 || id.indexOf('360') !== -1 || id.indexOf('standard gamepad') != -1) {
       return Gamepad.Type.XBOX;
@@ -480,6 +478,8 @@
       return Gamepad.Type.LOGITECH;
     } else if (id.indexOf('playstation') !== -1) {
       return Gamepad.Type.PLAYSTATION;
+    } else if (gamepad.mapping == 'standard') {
+      return Gamepad.Type.STANDARD;
     } else {
       return Gamepad.Type.UNSUPPORTED;
     }
