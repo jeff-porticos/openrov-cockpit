@@ -32,35 +32,30 @@
     this.otherBuffer = [];
     this.sessions_cache = [];
 
-    this.actions =
-    {
-      "plugin.blackbox.record":
-      {
-        description: 'Toggle recording of telemetry data.',
-        controls:
-        {
-          button:
-          {
-            down: function() {
-              self.toggleRecording();
-            }
-          }
-        }
-      }
-    };
-    this.inputDefaults =
-    {
-      keyboard:
-      {
-        r: { type: "button",
-             action: "plugin.blackbox.record" }
-      },
-      gamepad:
-      {
-        "A": { type: "button",
-               action: "plugin.blackbox.record" }
-      }
-    };
+//    this.actions =
+//    {
+//      "plugin.blackbox.record":
+//      {
+//        description: 'Toggle recording of telemetry data.',
+//        controls:
+//        {
+//          button:
+//          {
+//            down: function() {
+//              self.toggleRecording();
+//            }
+//          }
+//        }
+//      }
+//    };
+//    this.inputDefaults =
+//    {
+//      keyboard:
+//      {
+//        r: { type: "button",
+//             action: "plugin.blackbox.record" }
+//      }
+//    };
   };
 
   plugins.Blackbox = Blackbox;

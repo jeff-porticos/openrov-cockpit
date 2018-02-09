@@ -7,22 +7,73 @@
     var self = this;
     self.cockpit = cockpit;
     
-    self.laserState = {
+    self.balanceState = {
+      enabled: false
+    };
+    
+    self.pidState = {
+      enabled: false
+    };
+    
+    self.thrusterState = {
+      enabled: false
+    };
+    
+    self.initState = {
       enabled: false
     };
     
 
     this.actions = 
     {
-      "plugin.laser.Toggle":
+      "plugin.laser.balance":
       {
-        description: 'Toggle lasers',
+        description: 'Toggle automatic depth/balance control',
         controls:
         {
           button:
           {
             down: function() {
-              cockpit.rov.emit('plugin.laser.set', self.laserState.enabled == true ? 0 : 1);
+              cockpit.rov.emit('plugin.laser.balance', self.balanceState.enabled == true ? 0 : 1);
+            }            
+          }
+        }
+      },
+      "plugin.laser.thrusters":
+      {
+        description: 'Toggle thruster control',
+        controls:
+        {
+          button:
+          {
+            down: function() {
+              cockpit.rov.emit('plugin.laser.thrusters', self.thrusterState.enabled == true ? 0 : 1);
+            }            
+          }
+        }
+      },
+      "plugin.laser.pids":
+      {
+        description: 'Toggle depth/balance control PIDs',
+        controls:
+        {
+          button:
+          {
+            down: function() {
+              cockpit.rov.emit('plugin.laser.pids', self.pidState.enabled == true ? 0 : 1);
+            }            
+          }
+        }
+      },
+      "plugin.laser.init":
+      {
+        description: 'Toggle initialization state of depth/balance control',
+        controls:
+        {
+          button:
+          {
+            down: function() {
+              cockpit.rov.emit('plugin.laser.init', self.initState.enabled == true ? 0 : 1);
             }            
           }
         }
@@ -33,13 +84,13 @@
     {
       keyboard:
       {
-        "l": { type: "button",
-               action: "plugin.laser.Toggle" }
+        "t": { type: "button",
+               action: "plugin.laser.balance" }
       },
       gamepad:
       {
-        "X": { type: "button",
-               action: "plugin.laser.Toggle" }
+        "RB": { type: "button",
+               action: "plugin.laser.balance" }
       }
     };
     
@@ -49,8 +100,8 @@
 
   plugins.Laser.prototype.getTelemetryDefinitions = function getTelemetryDefinitions() {
     return [{
-        name: 'claser',
-        description: 'Scaling Laser power 0 to 255'
+        name: 'cbalance',
+        description: 'Auto depth/balance algorithm state'
       }];
   };
   //This pattern will hook events in the cockpit and pull them all back

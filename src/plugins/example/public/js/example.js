@@ -13,32 +13,32 @@
             self.settings = null;     // These get sent by the local model
 
             //Set up actions associated with this plugin
-            this.actions = 
-            {
-                "plugin.example.sayHello":
-                {
-                    description: "Say Hello!",
-                    controls:
-                    {
-                        button:
-                        {
-                            down: function() {
-                                cockpit.emit('plugin.example.sayHello');
-                            }
-                        }
-                    }
-                }
-            };
+//            this.actions = 
+//            {
+//                "plugin.example.sayHello":
+//                {
+//                    description: "Say Hello!",
+//                    controls:
+//                    {
+//                        button:
+//                        {
+//                            down: function() {
+//                                cockpit.emit('plugin.example.sayHello');
+//                            }
+//                        }
+//                    }
+//                }
+//            };
 
-            // Setup input handlers
-            this.inputDefaults =
-            {
-                keyboard:
-                {
-                    "alt+0": { type: "button",
-                               action: "plugin.example.sayHello"}
-                }
-            };
+//            // Setup input handlers
+//            this.inputDefaults =
+//            {
+//                keyboard:
+//                {
+//                    "alt+0": { type: "button",
+//                               action: "plugin.example.sayHello"}
+//                }
+//            };
         };
 
         sayHello()

@@ -39,7 +39,7 @@
           <rect id="indicator" height="17.431" width="102.93" y="98.468" x="-4.1823" fill="#09531d"/>
           <text id="voltage" style="word-spacing:0px;letter-spacing:0px;text-anchor:middle;text-align:center;" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" xml:space="preserve" font-size="12.9946394px" line-height="125%" font-style="normal" y="114.32999" x="95.878906" font-weight="normal" fill="#ffffff"><tspan id="tspan3893" y="114.32999" x="95.878906"><tspan id="tspan3895" font-size="20px" y="114.32999" x="95.878906" font-weight="bold" fill="#ffffff"><tspan>{{ formatVoltage(voltage) }}</tspan>{{__('v')}}</tspan></tspan></text>
           <rect id="cindicator" height="17.431" width="102.93" y="123.468" x="-4.1823" fill="#09531d"/>
-          <text id="charge" style="word-spacing:0px;letter-spacing:0px;text-anchor:middle;text-align:center;" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" xml:space="preserve" font-size="12.9946394px" line-height="125%" font-style="normal" y="139.32999" x="95.878906" font-weight="normal" fill="#ffffff"><tspan id="tspan4893" y="139.32999" x="95.878906"><tspan id="tspan4895" font-size="20px" y="139.32999" x="95.878906" font-weight="bold" fill="#ffffff"><tspan>{{ formatCharge(charge) }}</tspan>{{__('%')}}</tspan></tspan></text>
+          <text id="charge" style="word-spacing:0px;letter-spacing:0px;text-anchor:middle;text-align:center;" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" xml:space="preserve" font-size="24.9946394px" line-height="125%" font-style="normal" y="139.32999" x="95.878906" font-weight="normal" fill="#ffffff"><tspan id="tspan4893" y="139.32999" x="95.878906"><tspan id="tspan4895" font-size="20px" y="139.32999" x="95.878906" font-weight="bold" fill="#ffffff"><tspan>{{ formatCharge(charge) }}</tspan>{{__('%')}}</tspan></tspan></text>
           <path id="path3005" stroke-linejoin="miter" d="m81.992,90.313,27.188,0,0,0" stroke="#FFF" stroke-linecap="butt" stroke-miterlimit="4" stroke-dasharray="none" stroke-width="2.79675651" fill="none"/>
           <path id="path3775" stroke-linejoin="miter" d="m86.513,80.302,18.135,0,0,0" stroke="#FFF" stroke-linecap="butt" stroke-miterlimit="4" stroke-dasharray="none" stroke-width="2.28410721" fill="none"/>
           <path id="path3777" stroke-linejoin="miter" d="m81.992,70.313,27.188,0,0,0" stroke="#FFF" stroke-linecap="butt" stroke-miterlimit="4" stroke-dasharray="none" stroke-width="2.79675651" fill="none"/>
@@ -194,14 +194,8 @@
           charge = parseFloat(charge);
           this.set("charge",charge);
 
-          // Calculate fill width
-          var fillWidth  = ( charge * 200.0 ).toFixed(2);
-
-          // Set a minimum value for fill width so the user can see some feedback that the value is very low
-          if( fillWidth < 1.0 )
-          {
-            fillWidth = 1.0;
-          }
+          // Always fill the entire width
+          var fillWidth  = ( 100 * 200.0 ).toFixed(2);
 
           // Set CSS attributes for indicator fill
           $(this.$.cindicator).css({ fill: this.hslColorFromPercent( charge ) });

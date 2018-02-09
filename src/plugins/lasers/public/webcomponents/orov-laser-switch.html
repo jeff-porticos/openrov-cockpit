@@ -17,8 +17,8 @@
     behaviors: [namespace('behaviors').oROVStandard,namespace('behaviors').oROVLaserSwitch],
     ready:function(){
         this.defaultPanel="flight-switches";
-        this.shortName="LSR";
-        this.description="Lasers on/off";
+        this.shortName="DEPTH";
+        this.description="Depth Control on/off";
     },
     _handleSwitchChange:function(){
         if (this.$.toggle.checked){

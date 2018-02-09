@@ -10,32 +10,32 @@
             var self = this;
             self.cockpit = cockpit;
 
-            this.actions =
-            {
-                'plugin.diveProfile.zeroDepth':
-                {
-                    description: 'Zero the depth gauge using the current depth as an offset',
-                    controls:
-                    {
-                        button:
-                        {
-                            down: function()
-                            {
-                                self.zeroDepth();
-                            }                            
-                        }
-                    }
-                }
-            };
+//            this.actions =
+//            {
+//                'plugin.diveProfile.zeroDepth':
+//                {
+//                    description: 'Zero the depth gauge using the current depth as an offset',
+//                    controls:
+//                    {
+//                        button:
+//                        {
+//                            down: function()
+//                            {
+//                                self.zeroDepth();
+//                            }                            
+//                        }
+//                    }
+//                }
+//            };
 
             // Setup input handlers
-            this.inputDefaults = 
-            {
-                keyboard: 
-                {
-                    "alt+d": { type: "button", action: 'plugin.diveProfile.zeroDepth' }
-                }
-            };
+//            this.inputDefaults = 
+//            {
+//                keyboard: 
+//                {
+//                    "alt+d": { type: "button", action: 'plugin.diveProfile.zeroDepth' }
+//                }
+//            };
         };
 
         zeroDepth()

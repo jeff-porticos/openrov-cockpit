@@ -9,8 +9,8 @@
   "Switches": "Switches",
   "Time": "Time",
   "Pre-Flight Check": "Pre-Flight Check",
-  "Callibration": "Callibration",
-  "Callibrate Compass": "Callibrate Compass",
+  "Calibration": "Calibration",
+  "Calibrate Compass": "Calibrate Compass",
   "Battery": "Battery",
   "ThrustFactor": "ThrustFactor",
   "Connection": "Connection",
@@ -22,6 +22,5 @@
   "This page allows interaction with past recorded dives.": "This page allows interaction with past recorded dives.",
   "ROV Offline": "ROV Offline",
   "SwitchesNew": "SwitchesNew",
-  "This feature is in BETA. Please report problems at https://github.com/openrov/openrov-software/issues": "This feature is in BETA. Please report problems at https://github.com/openrov/openrov-software/issues",
   "Mjpeg Commands": "Mjpeg Commands"
 }

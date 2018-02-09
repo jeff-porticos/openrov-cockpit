@@ -9,10 +9,10 @@
       properties: {
       },
       on:function(){
-        this.eventEmitter.emit('plugin.laser.set',1)
+        this.eventEmitter.emit('plugin.laser.balance',1)
       },
       off:function(){
-        this.eventEmitter.emit('plugin.laser.set',0)
+        this.eventEmitter.emit('plugin.laser.balance',0)
       },
       registerEmitterHandlers: function(emitter){
         var self = this;

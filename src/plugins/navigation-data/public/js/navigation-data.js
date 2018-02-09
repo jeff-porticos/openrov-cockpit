@@ -4,33 +4,100 @@
   plugins.navigationData = function (cockpit) {
     var self = this;
     self.cockpit = cockpit;
-    
-    this.actions = 
-    {
-      'plugin.navigationData.toggleHeadsUpDisplay':
-      {
-        description: "Toggle HUD",
-        controls:
-        {
-          button:
-          {
-            down: function() {
-              cockpit.emit('plugin.navigationData.toggleHeadsUpDisplay');
-            }           
-          }
-        }
-      }
-    };
 
-    this.inputDefaults = 
-    {
-      keyboard:
-      {
-        "": { type: "button",
-                action: 'plugin.navigationData.toggleHeadsUpDisplay' }
-      }
+    self.autoDepthControlState = {
+      enabled: false
     };
+    
+    self.pidState = {
+      enabled: false
+    };
+    
+    self.depthControlInitState = {
+      enabled: false
+    };
+    
+    self.thrustersState = {
+      enabled: false
+    };
+    
+//    this.actions = 
+//    {
+//      'plugin.navigationData.toggleAutoDepthControl':
+//      {
+//        description: "Enable Automatic Depth Control",
+//        controls:
+//        {
+//          button:
+//          {
+//            down: function() {
+//              cockpit.emit('plugin.navigationData.toggleAutoDepthControl');
+//            }           
+//          }
+//        }
+//      },
+//      'plugin.navigationData.togglePIDs':
+//      {
+//        description: "Enable Depth Control PIDs",
+//        controls:
+//        {
+//          button:
+//          {
+//            down: function() {
+//              cockpit.emit('plugin.navigationData.togglePIDs');
+//            }           
+//          }
+//        }
+//      },
+//      'plugin.navigationData.toggleDepthControlInit':
+//      {
+//        description: "Restart Depth Control Sequence",
+//        controls:
+//        {
+//          button:
+//          {
+//            down: function() {
+//              cockpit.emit('plugin.navigationData.toggleDepthControlInit');
+//            }           
+//          }
+//        },
+//      'plugin.navigationData.toggleEnableThrusters':
+//      {
+//        description: "Enable or Disable Manual Thruster Control",
+//        controls:
+//        {
+//          button:
+//          {
+//            down: function() {
+//              cockpit.emit('plugin.navigationData.toggleEnableThrusters');
+//            }           
+//          }
+//        }
+//      }
+//    };
+//
+//    this.inputDefaults = 
+//    {
+//      keyboard:
+//      {
+//        "": { type: "button",
+//              action: 'plugin.navigationData.toggleAutoDepthControl' }
+//      },
+//      {
+//        "": { type: "button",
+//              action: 'plugin.navigationData.togglePIDs' }
+//      },
+//      {
+//        "": { type: "button",
+//              action: 'plugin.navigationData.toggleDepthControlInit' }
+//      },
+//      {
+//        "": { type: "button",
+//              action: 'plugin.navigationData.toggleEnableThrusters' }
+//      }
+//    };
   };
+
   plugins.navigationData.prototype.getTelemetryDefinitions = function getTelemetryDefinitions() {
     return [
       {
@@ -55,6 +122,7 @@
       }
     ];
   };
+
   //This pattern will hook events in the cockpit and pull them all back
   //so that the reference to this instance is available for further processing
   plugins.navigationData.prototype.listen = function listen() {
@@ -72,5 +140,7 @@
     })
 
   };
+
+  // Add plugin to the window object and add it to the plugins list
   window.Cockpit.plugins.push(plugins.navigationData);
 }(window));

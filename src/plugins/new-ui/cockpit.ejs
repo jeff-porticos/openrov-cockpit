@@ -78,12 +78,13 @@
 
     /* Style the buttons that are used to open the tab content */
     .tab button {
+        font-size: 12px;
         background-color: #f1f1f1;
         float: left;
         border: 1px solid #ccc;
         outline: none;
         cursor: pointer;
-        padding: 14px 16px;
+        padding: 4px 6px;
         transition: 0.4s;
     }
 
@@ -113,6 +114,27 @@
 
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
+
+    // register change of button on game controller
+    window.cockpit.on("plugin.externalLights.topCamera", function() 
+    {
+       document.getElementById("top").click();
+    });
+
+    window.cockpit.on("plugin.externalLights.bottomCamera", function() 
+    {
+       document.getElementById("bottom").click();
+    });
+
+    window.cockpit.on("plugin.externalLights.sideCamera", function() 
+    {
+       document.getElementById("side").click();
+    });
+
+    window.cockpit.on("plugin.externalLights.frontCamera", function() 
+    {
+       document.getElementById("defaultOpen").click();
+    });
 
     function convertName( inName ) {
         if (inName.localeCompare("Front Camera") === 0) {
@@ -168,9 +190,9 @@
             </div>
             <div class="tab">
             <button class="tablinks" onclick="openCamera(event, 'Front Camera')" id="defaultOpen">Front Camera</button>
-            <button class="tablinks" onclick="openCamera(event, 'Side Camera')">Side Camera</button>
-            <button class="tablinks" onclick="openCamera(event, 'Top Camera')">Top Camera</button>
-            <button class="tablinks" onclick="openCamera(event, 'Bottom Camera')">Bottom Camera</button>
+            <button class="tablinks" onclick="openCamera(event, 'Side Camera')" id="side">Side Camera</button>
+            <button class="tablinks" onclick="openCamera(event, 'Top Camera')" id="top">Top Camera</button>
+            <button class="tablinks" onclick="openCamera(event, 'Bottom Camera')" id="bottom">Bottom Camera</button>
             </div>
             <div id="Front Camera" class=tabcontent>
                 <div id="newuiVideo" class="full-height">

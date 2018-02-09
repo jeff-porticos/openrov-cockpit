@@ -10,32 +10,32 @@
             var self = this;
             self.cockpit = cockpit;
 
-            this.actions =
-            {
-                'plugin.imu.zeroYaw':
-                {
-                    description: 'Zero yaw/heading when in gyro mode',
-                    controls:
-                    {
-                        button:
-                        {
-                            down: function()
-                            {
-                                self.zeroYaw();
-                            }                            
-                        }
-                    }
-                }
-            };
+//            this.actions =
+//            {
+//                'plugin.imu.zeroYaw':
+//                {
+//                    description: 'Zero yaw/heading when in gyro mode',
+//                    controls:
+//                    {
+//                        button:
+//                        {
+//                            down: function()
+//                            {
+//                                self.zeroYaw();
+//                            }                            
+//                        }
+//                    }
+//                }
+//            };
 
             // Setup input handlers
-            this.inputDefaults = 
-            {
-                keyboard: 
-                {
-                    "alt+y": { type: "button", action: 'plugin.imu.zeroYaw' }
-                }
-            };
+//            this.inputDefaults = 
+//            {
+//                keyboard: 
+//                {
+//                    "alt+y": { type: "button", action: 'plugin.imu.zeroYaw' }
+//                }
+//            };
         };
 
         zeroRollPitch()

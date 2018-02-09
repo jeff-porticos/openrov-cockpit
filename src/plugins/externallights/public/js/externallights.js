@@ -15,10 +15,12 @@
             self.currentPower = 0.0;  // As reported by the local model
             self.targetPower = 0.0;   // As requested by this plugin
             self.selectedLight = 0;   
+            self.lastSelectedLight = 0;   
 
             // Alternate representations of targetPower
             self.currentStep = 0;     
             self.isOn        = false;
+            self.areAllOn    = false;
 
             self.stepMap =
             {
@@ -77,6 +79,71 @@
                             }                            
                         }
                     }
+                },
+                "plugin.externalLights.toggleAll":
+                {
+                    description: "Toggle All External Lights",
+                    controls:
+                    {
+                        button:
+                        {
+                            down: function() {
+                                cockpit.emit( 'plugin.externalLights.toggleAll' );
+                            }                            
+                        }
+                    }
+                },
+                "plugin.externalLights.topCamera":
+                {
+                    description: "Select Top Camera",
+                    controls:
+                    {
+                        button:
+                        {
+                            down: function() {
+                                cockpit.emit( 'plugin.externalLights.topCamera' );
+                            }                            
+                        }
+                    }
+                },
+                "plugin.externalLights.bottomCamera":
+                {
+                    description: "Select Bottom Camera",
+                    controls:
+                    {
+                        button:
+                        {
+                            down: function() {
+                                cockpit.emit( 'plugin.externalLights.bottomCamera' );
+                            }                            
+                        }
+                    }
+                },
+                "plugin.externalLights.sideCamera":
+                {
+                    description: "Select Side Camera",
+                    controls:
+                    {
+                        button:
+                        {
+                            down: function() {
+                                cockpit.emit( 'plugin.externalLights.sideCamera' );
+                            }                            
+                        }
+                    }
+                },
+                "plugin.externalLights.frontCamera":
+                {
+                    description: "Select Front Camera",
+                    controls:
+                    {
+                        button:
+                        {
+                            down: function() {
+                                cockpit.emit( 'plugin.externalLights.frontCamera' );
+                            }                            
+                        }
+                    }
                 }
             };
 
@@ -91,15 +158,27 @@
                            action: "plugin.externalLights.stepNegative" },
                     "shift+o": { type: "button",
                            action: "plugin.externalLights.toggle" },
+                    "shift+a": { type: "button",
+                           action: "plugin.externalLights.toggleAll" }
                 },
                 gamepad:
                 {
-                    "DPAD_RIGHT": { type: "button",
+                    "DPAD_UP": { type: "button",
                            action: 'plugin.externalLights.stepPositive' },
-                    "DPAD_LEFT": { type: "button",
+                    "DPAD_DOWN": { type: "button",
                            action: 'plugin.externalLights.stepNegative' },
+                    "DPAD_LEFT": { type: "button",
+                           action: 'plugin.externalLights.toggle' },
+                    "DPAD_RIGHT": { type: "button",
+                           action: 'plugin.externalLights.toggleAll' },
                     "Y": { type: "button",
-                           action: 'plugin.externalLights.toggle' }
+                           action: 'plugin.externalLights.topCamera' },
+                    "A": { type: "button",
+                           action: 'plugin.externalLights.bottomCamera' },
+                    "X": { type: "button",
+                           action: 'plugin.externalLights.sideCamera' },
+                    "B": { type: "button",
+                           action: 'plugin.externalLights.frontCamera' }
                 }
 
             };
@@ -200,6 +279,26 @@
             this.updateFromStep();
         }
 
+        allOff()
+        {
+            // Only Update the "all" state
+            this.areAllOn = false;
+            // revert to last active tab
+            this.selectedLight = this.lastSelectedLight;
+            this.updateFromSelectedLight();
+        }
+
+        allOn()
+        {    
+            // indicate LED state is on as well as the allOn state
+            this.on();
+            // Update boolean rep
+            this.areAllOn = true;
+            // selected light 0 is all lights
+            this.selectedLight = 0;
+            this.updateFromSelectedLight();
+        }
+
         off()
         {
             // Update boolean rep
@@ -214,6 +313,18 @@
             this.isOn = true;
 
             this.updateFromState();
+        }
+
+        toggleAll()
+        {
+            if( this.isAllOn === false )
+            {
+                this.allOn();
+            }
+            else
+            {
+                this.allOff();
+            }
         }
 
         toggle()
@@ -301,6 +412,12 @@
                 self.toggle();
             });
 
+            // Toggle all lights
+            this.cockpit.on('plugin.externalLights.toggleAll', function()
+            {
+                self.toggleAll();
+            });
+
             // setTargetPower
             this.cockpit.on('plugin.externalLights.setTargetPower', function( power )
             {
@@ -315,6 +432,7 @@
                 var numberStr = selectedLight.substr(selectedLight.length -1)
                 // Set new active LED
                 self.selectedLight =  Number(numberStr);
+                this.lastSelectedLight = this.selectedLight;
                 self.updateFromSelectedLight();
             });
 

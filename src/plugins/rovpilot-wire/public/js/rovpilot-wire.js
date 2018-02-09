@@ -38,46 +38,46 @@
         controlResetsSetPoint: false 
       };
 
-      this.actions = 
-      {
-        'rovPilot.toggleHeadingHold':
-        {
-          description: "Toggle Heading Hold",
-          controls:
-          {
-            button:
-            {
-              down: function() {
-                self.cockpit.emit('plugin.rovpilot.headingHold.set-enabled', !self.headingHold_state.enabled);
-              }            
-            }
-          }
-        },
-        'rovPilot.toggleDepthHold':
-        {
-          description: "Toggle Depth Hold",
-          controls:
-          {
-            button:
-            {
-              down: function() {
-                self.cockpit.emit('plugin.rovpilot.depthHold.set-enabled', !self.depthHold_state.enabled);
-              }            
-            }
-          }
-        }      
-      };
+//      this.actions = 
+//      {
+//        'rovPilot.toggleHeadingHold':
+//        {
+//          description: "Toggle Heading Hold",
+//          controls:
+//          {
+//            button:
+//            {
+//              down: function() {
+//                self.cockpit.emit('plugin.rovpilot.headingHold.set-enabled', !self.headingHold_state.enabled);
+//              }            
+//            }
+//          }
+//        },
+//        'rovPilot.toggleDepthHold':
+//        {
+//          description: "Toggle Depth Hold",
+//          controls:
+//          {
+//            button:
+//            {
+//              down: function() {
+//                self.cockpit.emit('plugin.rovpilot.depthHold.set-enabled', !self.depthHold_state.enabled);
+//              }            
+//            }
+//          }
+//        }      
+//      };
 
-      this.inputDefaults = 
-      {
-        keyboard:
-        {
-          "h": { type: "button", 
-                action: 'rovPilot.toggleHeadingHold' },
-          "g": { type: "button", 
-                action: 'rovPilot.toggleDepthHold' }
-        }
-      };
+//      this.inputDefaults = 
+//      {
+//        keyboard:
+//        {
+//          "h": { type: "button", 
+//                action: 'rovPilot.toggleHeadingHold' },
+//          "g": { type: "button", 
+//                action: 'rovPilot.toggleDepthHold' }
+//        }
+//      };
     };
     
     altMenuDefaults()

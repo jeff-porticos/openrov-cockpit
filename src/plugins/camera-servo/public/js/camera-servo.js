@@ -18,72 +18,72 @@
             self.currentStep = 0;   // Alternative representation of targetPos
             self.stepMap = {};      // Automatically generated mapping of integer "steps" to target positions
 
-            this.actions = 
-            {
-                "plugin.cameraServo.stepPositive":
-                {
-                    description: 'Step camera up',
-                    controls:
-                    {
-                        button:
-                        {
-                            down: function() {
-                                cockpit.emit('plugin.cameraServo.stepPositive');
-                            }
-                        },
-                    }
-
-                },
-                "plugin.cameraServo.center":
-                {
-                    description: 'Center camera',
-                    controls:
-                    {
-                        button:
-                        {
-                            down: function() {
-                                cockpit.emit('plugin.cameraServo.center');
-                            }
-                        }
-                    }
-
-                },
-                "plugin.cameraServo.stepNegative":
-                {
-                    description: 'Step camera down',
-                    controls:
-                    {
-                        button:
-                        {
-                            down: function() {
-                                cockpit.emit('plugin.cameraServo.stepNegative');
-                            }
-                        }
-                    }
-                }
-            };
-
-            this.inputDefaults = 
-            {
-                keyboard: 
-                {
-                    "]": { type: "button",
-                         action: "plugin.cameraServo.stepPositive" },
-                    "\\": { type: "button",
-                         action: "plugin.cameraServo.center" },
-                    "[": { type: "button",
-                         action: "plugin.cameraServo.stepNegative" }
-                },
-                gamepad: 
-                {
-                    "DPAD_UP": { type: "button",
-                         action: "plugin.cameraServo.stepPositive" },
-                    "B": { type: "button",
-                         action: "plugin.cameraServo.center" },
-                    "DPAD_DOWN": { type: "button",
-                         action: "plugin.cameraServo.stepNegative" }
-                }
-            };
+//            this.actions = 
+//            {
+//                "plugin.cameraServo.stepPositive":
+//                {
+//                    description: 'Step camera up',
+//                    controls:
+//                    {
+//                        button:
+//                        {
+//                            down: function() {
+//                                cockpit.emit('plugin.cameraServo.stepPositive');
+//                            }
+//                        },
+//                    }
+//
+//                },
+//                "plugin.cameraServo.center":
+//                {
+//                    description: 'Center camera',
+//                    controls:
+//                    {
+//                        button:
+//                        {
+//                            down: function() {
+//                                cockpit.emit('plugin.cameraServo.center');
+//                            }
+//                        }
+//                    }
+//
+//                },
+//                "plugin.cameraServo.stepNegative":
+//                {
+//                    description: 'Step camera down',
+//                    controls:
+//                    {
+//                        button:
+//                        {
+//                            down: function() {
+//                                cockpit.emit('plugin.cameraServo.stepNegative');
+//                            }
+//                        }
+//                    }
+//                }
+//            };
+//
+//            this.inputDefaults = 
+//            {
+//                keyboard: 
+//                {
+//                    "]": { type: "button",
+//                         action: "plugin.cameraServo.stepPositive" },
+//                    "\\": { type: "button",
+//                         action: "plugin.cameraServo.center" },
+//                    "[": { type: "button",
+//                         action: "plugin.cameraServo.stepNegative" }
+//                },
+//                gamepad: 
+//                {
+//                    "DPAD_UP": { type: "button",
+//                         action: "plugin.cameraServo.stepPositive" },
+//                    "B": { type: "button",
+//                         action: "plugin.cameraServo.center" },
+//                    "DPAD_DOWN": { type: "button",
+//                         action: "plugin.cameraServo.stepNegative" }
+//                }
+//            };
         };
 
         

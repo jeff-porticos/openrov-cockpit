@@ -3,24 +3,36 @@
     deps.logger.debug('Laser plugin loaded');
     var claserstate = 0;
     // Cockpit
-    deps.cockpit.on('plugin.laser.set', function (value) {
-      sendLaser(value);
+    deps.cockpit.on('plugin.laser.balance', function (value) {
+      sendBalance(value);
+    });
+    deps.cockpit.on('plugin.laser.pids', function (value) {
+      sendPIDs(value);
+    });
+    deps.cockpit.on('plugin.laser.thrusters', function (value) {
+      sendThrusters(value);
+    });
+    deps.cockpit.on('plugin.laser.init', function (value) {
+      sendInit(value);
     });
     // Arduino
     deps.globalEventLoop.on('mcu.status', function (data) {
-      if ('claser' in data) {
-        var enabled = data.claser == 255;
+      if ('cbalance' in data) {
+        var enabled = (data.cbalance != 0);
         deps.cockpit.emit('plugin.laser.state', { enabled: enabled ? true : false });
       }
     });
-    var sendLaser = function (state) {
-      var claserstate;
-      if (state === 1) {
-        claserstate = 255;
-      } else {
-        claserstate = 0;
-      }
-      deps.globalEventLoop.emit('mcu.SendCommand', 'claser(' + claserstate + ')');
+    var sendBalance = function (state) {
+      deps.globalEventLoop.emit('mcu.SendCommand', 'start_balance(' + state + ')');
+    };
+    var sendPIDs = function (state) {
+      deps.globalEventLoop.emit('mcu.SendCommand', 'enable_pids(' + state + ')');
+    };
+    var sendThrusters = function (state) {
+      deps.globalEventLoop.emit('mcu.SendCommand', 'enable_thrusters(' + state + ')');
+    };
+    var sendInit = function (state) {
+      deps.globalEventLoop.emit('mcu.SendCommand', 'init_balance(' + state + ')');
     };
   }
   module.exports = function (name, deps) {
