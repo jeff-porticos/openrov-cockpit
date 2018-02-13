@@ -89,7 +89,7 @@
       },
       gamepad:
       {
-        "RB": { type: "button",
+        "START": { type: "button",
                action: "plugin.laser.balance" }
       }
     };

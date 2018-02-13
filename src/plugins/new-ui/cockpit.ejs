@@ -115,6 +115,15 @@
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
 
+    // determine the active camera and get its port and ip address
+
+    window.cockpit.on("plugin.externalLights.snapPhoto", function() 
+    {
+       // get the active camera
+       // execute wget http://ip:<port>/?action=snapshot -O /home/pi/snaps/<camera#.date.jpg>
+       window.cockpit.emit("plugin.externalLights.snapSelectedPhoto", activeCameraName() );
+    });
+
     // register change of button on game controller
     window.cockpit.on("plugin.externalLights.topCamera", function() 
     {
@@ -135,6 +144,27 @@
     {
        document.getElementById("defaultOpen").click();
     });
+
+    function activeCameraName() {
+        // Declare all variables
+        var i, active, tablinks;
+
+        i = 0;
+        active = 0;
+        tablinks = document.getElementsByClassName("tablinks");
+        while ((i < tablinks.length) && (active == 0)) {
+            if (tablinks[i].className.indexOf("active") != -1) {
+               active = 1;
+               break;
+            }
+            i = i + 1;
+        }
+        // found it
+        if (active === 1) {
+            i = i + 1;
+        }
+        return( "Camera " + i.toString() );
+    }
 
     function convertName( inName ) {
         if (inName.localeCompare("Front Camera") === 0) {

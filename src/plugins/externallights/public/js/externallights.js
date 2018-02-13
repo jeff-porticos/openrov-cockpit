@@ -15,6 +15,7 @@
             self.currentPower = 0.0;  // As reported by the local model
             self.targetPower = 0.0;   // As requested by this plugin
             self.selectedLight = 0;   
+            self.selectedPhoto = 0;   
             self.lastSelectedLight = 0;   
 
             // Alternate representations of targetPower
@@ -144,6 +145,19 @@
                             }                            
                         }
                     }
+                },
+                "plugin.externalLights.snapPhoto":
+                {
+                    description: "Snap a photo from the active camera",
+                    controls:
+                    {
+                        button:
+                        {
+                            down: function() {
+                                cockpit.emit( 'plugin.externalLights.snapPhoto' );
+                            }                            
+                        }
+                    }
                 }
             };
 
@@ -159,7 +173,9 @@
                     "shift+o": { type: "button",
                            action: "plugin.externalLights.toggle" },
                     "shift+a": { type: "button",
-                           action: "plugin.externalLights.toggleAll" }
+                           action: "plugin.externalLights.toggleAll" },
+                    "shift+p": { type: "button",
+                           action: "plugin.externalLights.snapPhoto" }
                 },
                 gamepad:
                 {
@@ -178,7 +194,9 @@
                     "X": { type: "button",
                            action: 'plugin.externalLights.sideCamera' },
                     "B": { type: "button",
-                           action: 'plugin.externalLights.frontCamera' }
+                           action: 'plugin.externalLights.frontCamera' },
+                    "BACK": { type: "button",
+                           action: 'plugin.externalLights.snapPhoto' }
                 }
 
             };
@@ -219,6 +237,12 @@
 
             // Send request to local model
             this.cockpit.rov.emit( 'plugin.externalLights.setTargetPower', this.targetPower );
+        }
+
+        updateFromSelectedPhoto()
+        {
+            // Send request to local model
+            this.cockpit.rov.emit( 'plugin.externalLights.setSelectedPhoto', this.selectedPhoto );
         }
 
         updateFromSelectedLight()
@@ -423,6 +447,15 @@
             {
                 self.targetPower = power;
                 self.updateFromPower();
+            });
+
+            this.cockpit.on('plugin.externalLights.snapSelectedPhoto', function( selectedPhoto )
+            {
+                // a string "Camera N" will be delivered
+                console.log("selectedPhoto: " + selectedPhoto);
+                var numberStr = selectedPhoto.substr(selectedPhoto.length -1)
+                self.selectedPhoto =  Number(numberStr);
+                self.updateFromSelectedPhoto();
             });
 
             this.cockpit.on('plugin.externalLights.setSelectedLight', function( selectedLight )

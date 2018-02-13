@@ -26,14 +26,29 @@
             this.targetPower          = 0;
             this.targetPower_enc      = 0;
             this.mcuTargetPower_enc   = 0;
+            this.selectedPhoto        = 0;
             this.selectedLight        = 0;
             this.mcuSelectedLight     = 0;
+            this.mcuSelectedPhoto     = 0;
 
             var self = this;
 
             this.SyncTargetPower = new Periodic( 100, "timeout", function()
             {
                 var synced = true;
+
+                // update selected Camera to snap
+                if( self.selectedPhoto !== 0)
+                {
+                    synced = false;
+
+                    // Encode floating point to integer representation
+                    var command = 'ephoto_select(' + self.selectedPhoto + ')';
+
+                    // Emit command to mcu
+                    self.globalBus.emit( 'mcu.SendCommand', command );
+                    self.selectedPhoto = 0;
+                }
 
                 // update selected active LED
                 if( self.mcuSelectedLight !== self.selectedLight )
@@ -83,6 +98,7 @@
                     // Enable API
                     self.listeners.setTargetPower.enable();
                     self.listeners.setSelectedLight.enable();
+                    self.listeners.setSelectedPhoto.enable();
                 }),
 
                 mcuStatus: new Listener( this.globalBus, 'mcu.status', false, function( data )
@@ -101,6 +117,12 @@
                     {
                         // Save for sync validation purposes
                         self.mcuSelectedLight = parseInt( data.elights_select );
+                    }
+
+                    if( 'ephoto_select' in data ) 
+                    {
+                        // Save for sync validation purposes
+                        self.mcuSelectedPhoto = parseInt( data.ephoto_select );
                     }
 
                     // Target light power
@@ -128,10 +150,34 @@
                     // the original string is now a number
                     // Set new active LED
                     self.setSelectedLight( selectedLight );
+                }),
+
+                setSelectedPhoto: new Listener( this.cockpitBus, 'plugin.externalLights.setSelectedPhoto', false, function( selectedPhoto )
+                {
+                    // the original string is now a number
+                    // Set new active LED
+                    self.setSelectedPhoto( selectedPhoto );
                 })
+            
             }
         }
 
+        setSelectedPhoto( selectedPhoto )
+        {
+            var self = this;
+
+            // Validate input
+            if( isNaN( selectedPhoto ) )
+            {
+              // Ignore
+              return;
+            }
+
+            self.selectedPhoto = selectedPhoto;
+
+            self.SyncTargetPower.start();
+        }
+        
         setSelectedLight( selectedLight )
         {
             var self = this;
@@ -190,6 +236,7 @@
           this.listeners.mcuStatus.disable();
           this.listeners.setTargetPower.disable();
           this.listeners.setSelectedLight.disable();
+          this.listeners.setSelectedPhoto.disable();
         }
 
         getSettingSchema()

@@ -35,6 +35,7 @@
       deps.globalEventLoop.emit('mcu.SendCommand', 'init_balance(' + state + ')');
     };
   }
+
   module.exports = function (name, deps) {
     return new Laser(name, deps);
   };

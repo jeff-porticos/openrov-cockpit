@@ -37,7 +37,7 @@ var ArduinoHelper = function () {
   physics.mapMotors = function (throttle, yaw, vertical) {
     var port = 0, starboard = 0;
     throttle = result.deadzone(throttle, -0.09, 0.09);
-    yaw = result.deadzone(yaw, -0.1, 0.1);
+    yaw = result.deadzone(yaw, -0.175, 0.175);
     vertical = result.deadzone(vertical, -0.1, 0.1);
     port = starboard = throttle;
     port += yaw;
