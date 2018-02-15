@@ -16,9 +16,9 @@
     },
     behaviors: [namespace('behaviors').oROVStandard,namespace('behaviors').oROVDepthHoldSwitch],
     ready:function(){
-        this.defaultPanel=""; //"flight-switches";
-        this.shortName="DLK";
-        this.description="Depthhold active/inactive";
+        this.defaultPanel="flight-switches";
+        this.shortName="PANIC";
+        this.description="Force restart of STIR from host processor";
     },
     _handleSwitchChange:function(){
         if (this.$.toggle.checked){

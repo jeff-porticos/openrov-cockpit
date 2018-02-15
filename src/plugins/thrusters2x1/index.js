@@ -49,12 +49,13 @@ thrusters2x1.prototype.SendMotorSettings = function SendMotorSettings() {
       starbord = starbord * -1;
       nstarbord = nstarbord * -1;
     }
+    // disable transmission of these commands
     //todo: Move to motor-diag plugin
     //API to Arduino to pass a percent in 2 decimal accuracy requires multipling by 100 before sending.
-    command = 'mtrmod1(' + port * 100 + ',' + vertical * 100 + ',' + starbord * 100 + ')';
-    this.global.emit('mcu.SendCommand', command);
-    command = 'mtrmod2(' + nport * 100 + ',' + nvertical * 100 + ',' + nstarbord * 100 + ')';
-    this.global.emit('mcu.SendCommand', command);
+    // command = 'mtrmod1(' + port * 100 + ',' + vertical * 100 + ',' + starbord * 100 + ')';
+    // this.global.emit('mcu.SendCommand', command);
+    // command = 'mtrmod2(' + nport * 100 + ',' + nvertical * 100 + ',' + nstarbord * 100 + ')';
+    // this.global.emit('mcu.SendCommand', command);
   }
 
 thrusters2x1.prototype.getSettingSchema = function getSettingSchema() {

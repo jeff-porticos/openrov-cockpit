@@ -48,10 +48,10 @@ class DiveProfile
         if( self.mcuWaterType !== self.targetWaterType )
         {
             synced = false;
-
+            // disable unused command transmission
             // Emit command to mcu
-            var command = 'depth_water(' + self.targetWaterType + ')';
-            self.globalBus.emit( 'mcu.SendCommand', command );
+            // var command = 'depth_water(' + self.targetWaterType + ')';
+            // self.globalBus.emit( 'mcu.SendCommand', command );
         }
 
         // TODO: Max Attempts

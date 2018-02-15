@@ -117,9 +117,9 @@
           self.headingHold_state = state;
         });
 
-        this.cockpit.on('plugin.rovpilot.depthHold.set-enabled', function (value) {
+        this.cockpit.on('plugin.rovpilot.depthHold.takeover', function (value) {
           self.depthHold_desiredOn = value;
-          self.rov.emit('plugin.rovpilot.depthHold.set', { enabled: value });
+          self.rov.emit('plugin.rovpilot.depthHold.takeover', value );
         });
 
         this.cockpit.on('plugin.rovpilot.headingHold.set-enabled', function (value) {

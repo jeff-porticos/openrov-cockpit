@@ -9,14 +9,14 @@
       properties: {
       },
       on:function(){
-        this.eventEmitter.emit('plugin.rovpilot.depthHold.set-enabled',true)
+        this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',true)
       },
       off:function(){
-        this.eventEmitter.emit('plugin.rovpilot.depthHold.set-enabled',false)
+        this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',false)
       },
       registerEmitterHandlers: function(emitter){
         var self = this;
-        emitter.withHistory.on('plugin.rovpilot.depthHold.state',function(state){
+        emitter.withHistory.on('plugin.rovpilot.depthHold.tstate',function(state){
           if (state.enabled){
             self.set('switchState','on')
           } else {

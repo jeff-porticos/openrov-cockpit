@@ -52,12 +52,12 @@ class IMU
                 ( self.mcuPitchOffset_enc !== self.targetPitchOffset_enc ) )
             {
                 synced = false;
-
+                // disable sending this command
                 // Encode floating point to integer representation
-                var command = 'imu_level(' + self.targetRollOffset_enc + ',' + self.targetPitchOffset_enc + ')';
+                // var command = 'imu_level(' + self.targetRollOffset_enc + ',' + self.targetPitchOffset_enc + ')';
 
                 // Emit command to mcu
-                self.globalBus.emit( 'mcu.SendCommand', command );
+                // self.globalBus.emit( 'mcu.SendCommand', command );
             }
 
             // TODO: Max Attempts

@@ -14,17 +14,11 @@
         targetHeading: 0
       }
     };
-    deps.cockpit.on('plugin.rovpilot.depthHold.set', function (value) {
-      //TODO: Tunnel the off/on up through the arduino code
-      if ('enabled' in value) {
-        if (value.enabled === true) {
-          deps.globalEventLoop.emit('mcu.SendCommand', 'holdDepth_on()');
-        } else {
-          deps.globalEventLoop.emit('mcu.SendCommand', 'holdDepth_off()');
-        }
-      }
-      if ('targetDepth' in value) {
-        deps.globalEventLoop.emit('mcu.SendCommand', 'holdDepth(' + value.targetDepth + ')');
+    deps.cockpit.on('plugin.rovpilot.depthHold.takeover', function (value) {
+      if (value === true) {
+        deps.globalEventLoop.emit('mcu.SendCommand', 'takeover(1)');
+      } else {
+        deps.globalEventLoop.emit('mcu.SendCommand', 'takeover(0)');
       }
     });
     deps.cockpit.on('plugin.rovpilot.headingHold.set', function (value) {
@@ -42,6 +36,9 @@
     });
     // Arduino
     deps.globalEventLoop.on('mcu.status', function (status) {
+      if ('takenover' in status) {
+        deps.cockpit.emit('plugin.rovpilot.depthHold.tstate', status.takenover );
+      }
       if ('targetDepth' in status) {
         self.state.depth.enabled = status.targetDepth != DISABLED;
         self.state.depth.targetDepth = Number(status.targetDepth) / 100;

@@ -226,26 +226,10 @@
           });
 
           emitter.withHistory.on('plugin.rovpilot.depthHold.state', function (state) {
-            if(state.enabled)
-            {
-              self.target = Number(state.targetDepth).toFixed(2);
-              //Format based on setting
-              if(self.depthUnit == "ft")
-              {
-                self.target = self.convertToFeet(state.targetDepth).toFixed(2);
-              }
-              $(self.$.depth).addClass('inverted');
-              $(self.$.depthTarget).removeClass('hidden');
-              $(self.$.depthLock).removeClass('hidden');
-
-            }
-            else
-            {
               self.target = 0;
               $(self.$.depth).removeClass('inverted');
               $(self.$.depthTarget).addClass('hidden');
               $(self.$.depthLock).addClass('hidden');
-            }
           });
           emitter.withHistory.on('plugin.diveProfile.waterType', function (waterType) {
             self.waterType = waterType;

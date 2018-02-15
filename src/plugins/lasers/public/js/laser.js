@@ -35,6 +35,7 @@
           {
             down: function() {
               cockpit.rov.emit('plugin.laser.balance', self.balanceState.enabled == true ? 0 : 1);
+              self.balanceState.enabled = !self.balanceState.enabled;
             }            
           }
         }
@@ -48,6 +49,7 @@
           {
             down: function() {
               cockpit.rov.emit('plugin.laser.thrusters', self.thrusterState.enabled == true ? 0 : 1);
+              self.thrusterState.enabled = !self.thrusterState.enabled;
             }            
           }
         }
@@ -61,6 +63,7 @@
           {
             down: function() {
               cockpit.rov.emit('plugin.laser.pids', self.pidState.enabled == true ? 0 : 1);
+              self.pidState.enabled = !self.pidState.enabled;
             }            
           }
         }
@@ -74,6 +77,7 @@
           {
             down: function() {
               cockpit.rov.emit('plugin.laser.init', self.initState.enabled == true ? 0 : 1);
+              self.initState.enabled = !self.initState.enabled;
             }            
           }
         }

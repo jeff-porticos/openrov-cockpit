@@ -51,12 +51,12 @@
             self.targetDepth=state.targetDepth;
           });
         },
-        isEnabled: function (isEnabeld) {
-          return isEnabeld ? 'enabled' : 'disabled';
+        isEnabled: function (isEnabled) {
+          return isEnabled ? 'enabled' : 'disabled';
         },
         toggleDepthHold: function () {
           if (this.eventEmitter !== undefined){
-            this.eventEmitter.emit('plugin.rovpilot.depthHold.set-enabled',!this.depthHoldEnabled);
+            this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',!this.depthHoldEnabled);
           }
         },
         _computeClass: function (depthHoldEnabled) {

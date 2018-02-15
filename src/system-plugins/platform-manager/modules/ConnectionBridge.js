@@ -73,10 +73,11 @@ function Bridge(socket_id) {
     if (serialConnected) {
       // console.log("Bridge Write: " + messagebuffer);
       var now = new Date();
-      var delay = 3 - (now.getTime() - lastWriteTime.getTime());
-      if (delay < 0) {
-        delay = 0;
-      }
+      // var delay = 3 - (now.getTime() - lastWriteTime.getTime());
+      // if (delay < 0) {
+      // make delay 1 second
+      var delay = 1;
+      // }
       lastWriteTime = now;
       lastWriteTime.setMilliseconds(lastWriteTime.getMilliseconds + delay);
       setTimeout(function () {

@@ -45,10 +45,10 @@
                 if( self.mcuSettings.inverted !== self.settings.inverted )
                 {
                     synced = false;
-
+                    // disable transmission of unused commands
                     // Send inversion setting request to the MCU
-                    var command = 'camServ_inv(' + ( self.settings.inverted ? 1 : 0 ) + ')';
-                    self.globalBus.emit( 'mcu.SendCommand', command );
+                    // var command = 'camServ_inv(' + ( self.settings.inverted ? 1 : 0 ) + ')';
+                    // self.globalBus.emit( 'mcu.SendCommand', command );
                 }
 
                 // Servo speed
@@ -56,9 +56,10 @@
                 {
                     synced = false;
 
+                    // disable transmission of unused commands
                     // Send speed setting request to the MCU
-                    var command = 'camServ_spd(' + self.encodedSettings.speed + ')';
-                    self.globalBus.emit( 'mcu.SendCommand', command );
+                    // var command = 'camServ_spd(' + self.encodedSettings.speed + ')';
+                    // self.globalBus.emit( 'mcu.SendCommand', command );
                 }
 
                 if( synced )
@@ -80,11 +81,12 @@
                 {
                     synced = false;
 
+                    // disable transmission of unused commands
                     // Encode floating point position to integer representation
-                    var command = 'camServ_tpos(' + self.targetPos_enc + ')';
+                    // var command = 'camServ_tpos(' + self.targetPos_enc + ')';
 
                     // Emit command to mcu
-                    self.globalBus.emit( 'mcu.SendCommand', command );
+                    // self.globalBus.emit( 'mcu.SendCommand', command );
                 }
 
                 if( synced )
