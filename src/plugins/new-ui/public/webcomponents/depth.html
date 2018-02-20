@@ -172,7 +172,7 @@
         </div>
       </div>
       
-      <div id="depth-change-unit" class="center text-center unit">{{depthUnit}}{{__('/s')}}</div>
+      <div id="depth-change-unit" class="center text-center unit">{{depthChangeUnit}}{{__('/s')}}</div>
     
     </div>
   </template>
@@ -195,6 +195,10 @@
           depthUnit: {
             type: String,
             value: function(){return 'm';}
+          },
+          depthChangeUnit: {
+            type: String,
+            value: function(){return 'cm';}
           },
           options: {
             type: Object,
@@ -260,6 +264,8 @@
             var currentDepth = self.depth;
 
             var difference = oldDepth - currentDepth;
+            // convert to centimeters
+            difference = difference * 100;
             
             if (currentDepth > oldDepth) {
               // descending, since this value
@@ -288,7 +294,8 @@
             }
             if(self.depthUnit == "ft")
             {
-              difference = self.convertToFeet(difference);
+              // difference in centimeters    
+              difference = self.convertToInches(difference);
             }
             changeText += difference.toFixed(2);
             self.change = changeText;
@@ -321,16 +328,21 @@
         convertToFeet(numberIn) {
           return Number(numberIn * 3.28);
         },
+        convertToInches(numberIn) {
+          return Number(numberIn * 0.3937);
+        },
         toggleDepthUnit: function(e) {
           var self = this;
           
           if(self.depthUnit == "m")
           {
             self.set("depthUnit", "ft");
+            self.set("depthChangeUnit", "in");
           }
           else
           {
             self.set("depthUnit", "m");
+            self.set("depthChangeUnit", "cm");
           }
           // force display update
           self.forceUpdate = true;

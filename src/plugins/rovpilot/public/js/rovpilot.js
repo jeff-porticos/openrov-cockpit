@@ -71,7 +71,7 @@
         },
         'rovPilot.moveForward':
         {
-          description: 'Set throttle forward',
+          description: 'Set port motor forward',
           controls:
           {
             button:
@@ -87,7 +87,7 @@
         },
         'rovPilot.moveBackwards':
         {
-          description: 'Set throttle backwards (aft)',
+          description: 'Set port motor backwards',
           controls:
           {
             button:
@@ -103,7 +103,7 @@
         },
         'rovPilot.moveThrottle':
         {
-          description: "Command throttle with gamepad thumbsticks",
+          description: "Command port motor with gamepad thumbsticks",
           controls:
           {
             axis: 
@@ -116,7 +116,7 @@
         },
         'rovPilot.moveYaw':
         {
-          description: "Command yaw with gamepad thumbsticks",
+          description: "Command starboard motor with gamepad thumbsticks",
           controls:
           {
             axis: 
@@ -129,7 +129,7 @@
         },
         'rovPilot.moveLeft':
         {
-          description: "Move left",
+          description: "Set starboard motor backwards",
           controls:
           {
             button:
@@ -145,7 +145,7 @@
         },
         'rovPilot.moveRight':
         {
-          description: "Move right",
+          description: "Set starbaord motor forwards",
           controls:
           {
             button:
@@ -354,7 +354,7 @@
                               }
                             } 
                           },
-          "LEFT_STICK_X": { type: "axis",
+          "RIGHT_STICK_Y": { type: "axis",
                             action: 'rovPilot.moveYaw',
                             options: {
                               inverted: false,

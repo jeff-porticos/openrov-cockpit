@@ -25,6 +25,8 @@
             this.globalBus  = deps.globalEventLoop;
             this.cockpitBus = deps.cockpit;
 
+            this.runVideo0  = false;
+            this.runVideo1  = false;
             this.settings   = {};
             this.camera     = null;
 
@@ -125,10 +127,12 @@
                     }
                 }),
 
-                scanForCameras: new Listener( this.cockpitBus, "plugin.mjpegVideo.scanForCameras", false, () =>
+                scanForCameras: new Listener( this.cockpitBus, "plugin.mjpegVideo.scanForCameras", false, function(runVideo0, runVideo1)
                 {
                     logger.info( "Scanning" );
-                    this.supervisor.emit( "scan" );
+                    this.runVideo0 = runVideo0;
+                    this.runVideo1 = runVideo1;
+                    this.supervisor.emit( "scan", this.runVideo0, this.runVideo1 );
                 }),
 
                 svConnect: new Listener( this.supervisor, 'connect', false, () =>

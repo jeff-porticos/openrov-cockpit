@@ -81,7 +81,7 @@
     return value * this.power;
   };
   ROVPilot.prototype.adjustYawForPowerLimit = function adjustYawForPowerLimit(value) {
-    return Math.min(Math.max(value * this.power * 1.5, -1), 1);
+    return value * this.power;
   };
   ROVPilot.prototype.setPowerLevel = function setPowerLevel(value) {
     switch (value) {
