@@ -39,8 +39,11 @@ var ArduinoHelper = function () {
     throttle = result.deadzone(throttle, -0.195, 0.195);
     yaw = result.deadzone(yaw, -0.195, 0.195);
     vertical = result.deadzone(vertical, -0.1, 0.1);
+    // invert vertical display
+    vertical = -1*vertical;
     port = throttle;
-    starboard = yaw;
+    // invert starboard display
+    starboard = -1*yaw;
     return {
       port: physics.mapRawMotor(port),
       starboard: physics.mapRawMotor(starboard),

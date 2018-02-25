@@ -28,7 +28,9 @@
             this.runVideo0  = false;
             this.runVideo1  = false;
             this.settings   = {};
+            this.supervisor = {};
             this.camera     = null;
+            this.disabled   = false;
 
             this.supervisorLaunchOptions = 
             [
@@ -37,12 +39,12 @@
                 "node",
                 require.resolve( 'mjpeg-video-server' ),
                 "-p",
-                defaults.port,
-                "-c",
-                "/etc/openrov/STAR_openrov_net.chained.crt",
-                "-k",
-                "/etc/openrov/star_openrov_net.key",
+                defaults.port
             ];
+//                "-c",
+//                "/etc/openrov/STAR_openrov_net.chained.crt",
+//                "-k",
+//                "/etc/openrov/star_openrov_net.key"
 
             // Handle mock options
             if( process.env.USE_MOCK === 'true' ) 
@@ -92,6 +94,7 @@
                 maxRestarts: -1,
                 sleep: 1000
             });
+            logger.info("this.svMonitor: ", this.svMonitor);
 
             this.svMonitor.on( "stdout", (data) =>
             {
@@ -129,7 +132,8 @@
 
                 scanForCameras: new Listener( this.cockpitBus, "plugin.mjpegVideo.scanForCameras", false, function(runVideo0, runVideo1)
                 {
-                    logger.info( "Scanning" );
+                    logger.info( "Scanning: ", this.supervisor );
+                    if (this.supervisor === undefined) return;
                     this.runVideo0 = runVideo0;
                     this.runVideo1 = runVideo1;
                     this.supervisor.emit( "scan", this.runVideo0, this.runVideo1 );
@@ -137,7 +141,7 @@
 
                 svConnect: new Listener( this.supervisor, 'connect', false, () =>
                 {
-                    logger.info( 'Successfully connected to mjpg-streamer supervisor' );
+                    logger.info( 'Successfully connected to mjpg-streamer supervisor ', this.supervisor );
 
                     // Start listening for settings changes (gets the latest settings)
                     this.listeners.settings.enable();
@@ -188,6 +192,7 @@
 
         start()
         {
+            logger.info("start mjpg-streamer supervisor: ", this.disabled);
             if( this.disabled )
             {
                 return;
@@ -208,6 +213,7 @@
 
         stop()
         {
+            logger.info("stop mjpg-streamer supervisor: ", this.disabled);
             if( this.disabled )
             {
                 return;
@@ -280,9 +286,10 @@
     {
         if( process.env.PRODUCTID == "trident" )
         {
-            deps.logger.debug( "MjpgStreamer Not supported on trident" );
+            deps.logger.info( "MjpgStreamer Not supported on trident" );
             return {};
         }
+        deps.logger.info("new mjpg-streamer supervisor");
 
         return new MjpgStreamer( name, deps );
     };

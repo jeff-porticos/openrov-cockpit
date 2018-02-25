@@ -166,6 +166,25 @@
         return( "Camera " + i.toString() );
     }
 
+    function videoControl( inName ) {
+        if (inName.localeCompare("Camera 1") === 0) {
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", true, false );
+        }
+
+        if (inName.localeCompare("Camera 2") === 0) {
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, true );
+        }
+
+        if (inName.localeCompare("Camera 3") === 0) {
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false );
+        }
+
+        if (inName.localeCompare("Camera 4") === 0) {
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false );
+        }
+
+    }
+
     function convertName( inName ) {
         if (inName.localeCompare("Front Camera") === 0) {
            return("Camera 1");
@@ -205,6 +224,7 @@
         var baseName = convertName(cameraName);
         window.cockpit.emit("activeCameraTab", baseName );
         window.cockpit.emit("plugin.externalLights.setSelectedLight", baseName );
+        videoControl(baseName);
     }
 
 </script>

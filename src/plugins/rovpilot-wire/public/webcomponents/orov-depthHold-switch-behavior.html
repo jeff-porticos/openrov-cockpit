@@ -9,18 +9,23 @@
       properties: {
       },
       on:function(){
-        this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',true)
+       var r = confirm("Are you sure you want to have this processor FORCE takeover of operations?");
+       if (r == true) {
+           this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',true);
+       } else {
+           this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',false);
+       }
       },
       off:function(){
-        this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',false)
+        this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',false);
       },
       registerEmitterHandlers: function(emitter){
         var self = this;
         emitter.withHistory.on('plugin.rovpilot.depthHold.tstate',function(state){
           if (state.enabled){
-            self.set('switchState','on')
+            self.set('switchState','on');
           } else {
-            self.set('switchState','off')
+            self.set('switchState','off');
           }
         })
       },
