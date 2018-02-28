@@ -1,5 +1,7 @@
 (function() 
 {
+    const os        = require( "os" );
+    const net       = require( "net" );
     const fs        = require('fs');
     const respawn   = require('respawn');
     const util      = require('util');
@@ -20,15 +22,16 @@
         {
             logger = deps.logger;
             
-            logger.info( "Loaded Cockpit Plugin: MjpgStreamer" );
+            logger.info( "Loaded Cockpit Plugin: MjpgStreamer", name, "deps: ", deps );
 
             this.globalBus  = deps.globalEventLoop;
             this.cockpitBus = deps.cockpit;
 
             this.runVideo0  = false;
             this.runVideo1  = false;
+            this.runVideo2  = false;
+            this.runVideo3  = false;
             this.settings   = {};
-            this.supervisor = {};
             this.camera     = null;
             this.disabled   = false;
 
@@ -83,6 +86,39 @@
                 reconnectionDelay: 1000
             });
 
+
+            logger.info("this.supervisor: ", this.supervisor.id);
+            // connect to 'B' supervisor if this is the 'A' PI
+            // so that we can enable and disable the B side cameras
+            var hostname = os.hostname();
+            logger.info( "HOSTNAME: " + hostname);
+            if (hostname.indexOf("B") === -1) {
+
+                var thisIP = this.getExternalIp();
+                // get the last number group
+                var index = this.getPosition(thisIP,".",3);
+                // get the value of that last number group
+                var id = thisIP.substring(index+1);
+                var baseIP = thisIP.substring(0,index+1);
+                // change a string to an integer
+                var value = parseInt(id);
+                // add one
+                value = value+1;
+                // now build a new IP address
+                var newIP = baseIP + value.toString();
+                // now build a new IP address
+                logger.info( "HTTP B Camera IP: " + newIP);
+                this.supervisorB = io.connect( newIP + ":" + defaults.port,
+                {
+                    path: defaults.wspath,
+                    reconnection: true,
+                    reconnectionAttempts: Infinity,
+                    reconnectionDelay: 1000
+                });
+
+            }
+
+
             this.svMonitor = respawn( this.supervisorLaunchOptions, 
             {
                 name: 'mjpeg-video-server',
@@ -95,6 +131,8 @@
                 sleep: 1000
             });
             logger.info("this.svMonitor: ", this.svMonitor);
+            logger.info("this.cockpitBus: ", this.cockpitBus);
+            logger.info("this.globalBus: ", this.globalBus );
 
             this.svMonitor.on( "stdout", (data) =>
             {
@@ -130,14 +168,25 @@
                     }
                 }),
 
-                scanForCameras: new Listener( this.cockpitBus, "plugin.mjpegVideo.scanForCameras", false, function(runVideo0, runVideo1)
+                scanForCameras: new Listener( this.cockpitBus, "plugin.mjpegVideo.scanForCameras", false, function(runVideo0, runVideo1, runVideo2, runVideo3)
                 {
-                    logger.info( "Scanning: ", this.supervisor );
-                    if (this.supervisor === undefined) return;
-                    this.runVideo0 = runVideo0;
-                    this.runVideo1 = runVideo1;
-                    this.supervisor.emit( "scan", this.runVideo0, this.runVideo1 );
-                }),
+                    try
+                    {
+                        logger.info( "mjpeg-streamer Scanning: ", this.supervisor );
+                        this.runVideo0 = runVideo0;
+                        this.runVideo1 = runVideo1;
+                        this.runVideo2 = runVideo2;
+                        this.runVideo3 = runVideo3;
+                        this.supervisor.emit( "scan", this.runVideo0, this.runVideo1 );
+                        if (this.supervisorB != undefined) {
+                            this.supervisorB.emit( "scan", this.runVideo2, this.runVideo3 );
+                        }
+                    }
+                    catch( err )
+                    {
+                        logger.info("mjpeg-streamer scanForCameras error: " + err);
+                    }
+                }.bind(this)),
 
                 svConnect: new Listener( this.supervisor, 'connect', false, () =>
                 {
@@ -149,22 +198,56 @@
 
                 svDisconnect: new Listener( this.supervisor, 'disconnect', false, function()
                 {
-                    logger.info( 'Disconnected from mjpg-streamer supervisor' );
+                    logger.info( 'Disconnected from mjpg-streamer supervisor: ' + this.supervisor );
                 }),
 
-                svError: new Listener( this.supervisor, 'error', false, function(err)
+                svConnectError: new Listener( this.supervisor, 'connect_error', false, function(err)
                 {
                     logger.error(err, 'Mjpg-streamer supervisor connection error' );
                 }),
 
+                svError: new Listener( this.supervisor, 'error', false, function(err)
+                {
+                    logger.error(err, 'Mjpg-streamer supervisor error' );
+                }),
+
                 svReconnect: new Listener( this.supervisor, 'reconnect', false, function()
                 {
-                    logger.info('Reconnecting to mjpg-streamer supervisor...');
+                    logger.info('Reconnecting to mjpg-streamer supervisor... ', this.supervisor);
+                }),
+
+                svBConnect: new Listener( this.supervisorB, 'connect', false, () =>
+                {
+                    logger.info( 'Successfully connected to mjpg-streamer supervisor B', this.supervisorB );
+
+                    // Start listening for settings changes (gets the latest settings)
+                    this.listeners.settings.enable();
+                }),
+
+                svBDisconnect: new Listener( this.supervisorB, 'disconnect', false, function()
+                {
+                    logger.info( 'Disconnected from mjpg-streamer supervisor B: ' + this.supervisorB );
+                }),
+
+                svBConnectError: new Listener( this.supervisorB, 'connect_error', false, function(err)
+                {
+                    logger.error(err, 'Mjpg-streamer supervisor B connection error' );
+                }),
+
+                svBError: new Listener( this.supervisorB, 'error', false, function(err)
+                {
+                    logger.error(err, 'Mjpg-streamer supervisor B error' );
+                }),
+
+                svBReconnect: new Listener( this.supervisorB, 'reconnect', false, function()
+                {
+                    logger.info('Reconnecting to mjpg-streamer supervisor B... ', this.supervisorB);
                 }),
 
                 svStreamRegistration: new Listener( this.supervisor, 'stream.registration', false, ( serial, info ) =>
                 {
-                    logger.info('Stream Registration: ' + JSON.stringify(info) );
+                    logger.info('mjpeg-streamer stream registration: ' + JSON.stringify(info) );
+                    logger.info('mjpg-streamer stream registration... ' + this.supervisor);
                     var relativeServiceUrl = null;
                     if (info.relativeServiceUrl !== null) {
                        relativeServiceUrl = info.relativeServiceUrl;
@@ -193,6 +276,7 @@
         start()
         {
             logger.info("start mjpg-streamer supervisor: ", this.disabled);
+            logger.info('mjpg-streamer stream start... ', this.supervisor);
             if( this.disabled )
             {
                 return;
@@ -280,6 +364,33 @@
                 ]
             }];
         }
+
+        getExternalIp()
+        {
+            var ifconfig = os.networkInterfaces();
+            var device, i, I, protocol;
+
+            for (device in ifconfig) {
+                // ignore loopback interface
+                if (device.indexOf('lo') !== -1 || !ifconfig.hasOwnProperty(device)) {
+                    continue;
+                }
+
+                for (i = 0, I=ifconfig[device].length; i < I; i++) {
+                    protocol = ifconfig[device][i];
+                    // filter for external IPv4 addresses
+                    if (protocol.family === 'IPv4' && protocol.internal === false) {
+                       return protocol.address;
+                    }
+                }
+            }
+        }
+
+        getPosition(string, subString, index)
+        {
+            return string.split(subString, index).join(subString).length;
+        }
+
     }
 
     module.exports = function( name, deps ) 

@@ -198,7 +198,7 @@
           var fillWidth  = ( 200.0 ).toFixed(2);
 
           // Set CSS attributes for indicator fill
-          $(this.$.cindicator).css({ fill: this.hslColorFromPercent( charge ) });
+          $(this.$.cindicator).css({ fill: this.hslColorFromPercent( charge/100 ) });
           $(this.$.cindicator).attr('width', fillWidth);
         },
 

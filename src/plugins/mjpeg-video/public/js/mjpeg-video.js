@@ -24,8 +24,8 @@
       defaultEnabled: true
     };
 
-    this.cockpit.on( "plugin.mjpegVideo.scanForCameras", function( runVideo0, runVideo1 ) {
-      this.rov.emit( "plugin.mjpegVideo.scanForCameras", runVideo0, runVideo1 );
+    this.cockpit.on( "plugin.mjpegVideo.scanForCameras", function( runVideo0, runVideo1, runVideo2, runVideo3 ) {
+      this.rov.emit( "plugin.mjpegVideo.scanForCameras", runVideo0, runVideo1, runVideo2, runVideo3 );
     });
   };
 

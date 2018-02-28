@@ -168,19 +168,19 @@
 
     function videoControl( inName ) {
         if (inName.localeCompare("Camera 1") === 0) {
-            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", true, false );
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", true, false, false, false );
         }
 
         if (inName.localeCompare("Camera 2") === 0) {
-            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, true );
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, true, false, false );
         }
 
         if (inName.localeCompare("Camera 3") === 0) {
-            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false );
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false, true, false );
         }
 
         if (inName.localeCompare("Camera 4") === 0) {
-            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false );
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false, false, true );
         }
 
     }

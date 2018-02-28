@@ -33,6 +33,16 @@
                         {
                                 type: Boolean,
                                 value: function(){ return false; }
+                        },
+                        runVideo2:
+                        {
+                                type: Boolean,
+                                value: function(){ return false; }
+                        },
+                        runVideo3:
+                        {
+                                type: Boolean,
+                                value: function(){ return false; }
                         }
 		},
 		
@@ -49,7 +59,7 @@
 	  
 		_scanForCameras: function()
 		{
-			this.eventEmitter.emit( "plugin.mjpegVideo.scanForCameras", this.runVideo0, this.runVideo1 );
+			this.eventEmitter.emit( "plugin.mjpegVideo.scanForCameras", this.runVideo0, this.runVideo1, this.runVideo2, this.runVideo3 );
 		}
     });
   </script>

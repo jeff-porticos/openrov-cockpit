@@ -14,15 +14,15 @@
       $('#time-item').css('visibility', 'visible');
       $('#time-item-collapsed').hide();
     }, function () {
-      $('#time-item').css('visibility', 'hidden');
-      $('#time-item-collapsed').show();
+      $('#time-item').css('visibility', 'visible');
+      $('#time-item-collapsed').hide();
     });
     this.WhenVisible('#power-item', function () {
       $('#power-item').css('visibility', 'visible');
       $('#power-item-collapsed').hide();
     }, function () {
-      $('#power-item').css('visibility', 'hidden');
-      $('#power-item-collapsed').show();
+      $('#power-item').css('visibility', 'visible');
+      $('#power-item-collapsed').hide();
     });
   };
   plugins.NewUI.prototype.WhenVisible = function (element, visibleCallback, obstructedCallback) {

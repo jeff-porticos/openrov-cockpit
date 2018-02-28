@@ -364,12 +364,32 @@
                               }
                             } 
                           },
-          "LEFT_TRIGGER": { type: "button",
-                            action: 'rovPilot.moveDown'
+          "LEFT_TRIGGER": { type: "axis",
+                            action: 'rovPilot.moveDown',
+                            options: {
+                              inverted: false,
+                              exponentialSticks: {
+                                enabled: false,
+                                rate: 1.0
+                              }
+                            } 
                           },
-          "RIGHT_TRIGGER": { type: "button",
-                            action: 'rovPilot.moveUp'
+//          "LEFT_TRIGGER": { type: "button",
+//                            action: 'rovPilot.moveDown'
+//                          },
+          "RIGHT_TRIGGER": { type: "axis",
+                            action: 'rovPilot.moveUp',
+                            options: {
+                              inverted: false,
+                              exponentialSticks: {
+                                enabled: false,
+                                rate: 1.0
+                              }
+                            } 
                           },
+//          "RIGHT_TRIGGER": { type: "button",
+//                            action: 'rovPilot.moveUp'
+//                          },
           "LB": { type: "button",
                             action: 'rovPilot.decrementPowerLevel'
           },
