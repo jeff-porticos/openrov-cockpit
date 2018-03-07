@@ -27,13 +27,15 @@
             this.globalBus  = deps.globalEventLoop;
             this.cockpitBus = deps.cockpit;
 
-            this.runVideo0  = false;
-            this.runVideo1  = false;
-            this.runVideo2  = false;
-            this.runVideo3  = false;
-            this.settings   = {};
-            this.camera     = null;
-            this.disabled   = false;
+            this.runVideo0   = false;
+            this.runVideo1   = false;
+            this.runVideo2   = false;
+            this.runVideo3   = false;
+            this.settings    = {};
+            this.camera      = null;
+            this.disabled    = false;
+            this.supervisor  = undefined;
+            this.supervisorB = undefined;
 
             this.supervisorLaunchOptions = 
             [
@@ -78,7 +80,10 @@
                 }
             }
 
-            this.supervisor = io.connect( 'http://localhost:' + defaults.port,
+            var hostIP = this.getExternalIp();
+            var connectIP = "http://" + hostIP + ':' + defaults.port;
+            logger.info("this.supervisor: ", connectIP);
+            this.supervisor = io.connect( connectIP,
             {
                 path: defaults.wspath,
                 reconnection: true,
@@ -108,13 +113,16 @@
                 var newIP = baseIP + value.toString();
                 // now build a new IP address
                 logger.info( "HTTP B Camera IP: " + newIP);
-                this.supervisorB = io.connect( newIP + ":" + defaults.port,
+                var newConnectIP = "http://" + newIP + ':' + defaults.port;
+                logger.info( "HTTP B Camera IP: " + newConnectIP);
+                this.supervisorB = io.connect( newConnectIP,
                 {
                     path: defaults.wspath,
                     reconnection: true,
                     reconnectionAttempts: Infinity,
                     reconnectionDelay: 1000
                 });
+                logger.info("this.supervisorB: ", this.supervisorB.id);
 
             }
 
@@ -143,6 +151,37 @@
             {
                 logger.debug( data.toString() );
             });      
+
+            if (this.supervisorB !== undefined) {
+                this.listenersB = 
+                {
+                    svBConnect: new Listener( this.supervisorB, 'connect', false, () =>
+                    {
+                        logger.info( 'Successfully connected to mjpg-streamer supervisor B', this.supervisorB );
+
+                    }),
+
+                    svBDisconnect: new Listener( this.supervisorB, 'disconnect', false, function()
+                    {
+                        logger.info( 'Disconnected from mjpg-streamer supervisor B: ' + this.supervisorB );
+                    }),
+
+                    svBConnectError: new Listener( this.supervisorB, 'connect_error', false, function(err)
+                    {
+                        logger.error(err, 'Mjpg-streamer supervisor B connection error' );
+                    }),
+
+                    svBError: new Listener( this.supervisorB, 'error', false, function(err)
+                    {
+                        logger.error(err, 'Mjpg-streamer supervisor B error' );
+                    }),
+
+                    svBReconnect: new Listener( this.supervisorB, 'reconnect', false, function()
+                    {
+                        logger.info('Reconnecting to mjpg-streamer supervisor B... ', this.supervisorB);
+                    })
+                }
+            }
 
             // Set up listeners
             this.listeners = 
@@ -178,7 +217,8 @@
                         this.runVideo2 = runVideo2;
                         this.runVideo3 = runVideo3;
                         this.supervisor.emit( "scan", this.runVideo0, this.runVideo1 );
-                        if (this.supervisorB != undefined) {
+                        logger.info( "mjpeg-streamer Scanning B: ", this.supervisorB );
+                        if (this.supervisorB !== undefined) {
                             this.supervisorB.emit( "scan", this.runVideo2, this.runVideo3 );
                         }
                     }
@@ -216,33 +256,6 @@
                     logger.info('Reconnecting to mjpg-streamer supervisor... ', this.supervisor);
                 }),
 
-                svBConnect: new Listener( this.supervisorB, 'connect', false, () =>
-                {
-                    logger.info( 'Successfully connected to mjpg-streamer supervisor B', this.supervisorB );
-
-                    // Start listening for settings changes (gets the latest settings)
-                    this.listeners.settings.enable();
-                }),
-
-                svBDisconnect: new Listener( this.supervisorB, 'disconnect', false, function()
-                {
-                    logger.info( 'Disconnected from mjpg-streamer supervisor B: ' + this.supervisorB );
-                }),
-
-                svBConnectError: new Listener( this.supervisorB, 'connect_error', false, function(err)
-                {
-                    logger.error(err, 'Mjpg-streamer supervisor B connection error' );
-                }),
-
-                svBError: new Listener( this.supervisorB, 'error', false, function(err)
-                {
-                    logger.error(err, 'Mjpg-streamer supervisor B error' );
-                }),
-
-                svBReconnect: new Listener( this.supervisorB, 'reconnect', false, function()
-                {
-                    logger.info('Reconnecting to mjpg-streamer supervisor B... ', this.supervisorB);
-                }),
 
                 svStreamRegistration: new Listener( this.supervisor, 'stream.registration', false, ( serial, info ) =>
                 {
@@ -289,6 +302,13 @@
             this.listeners.svReconnect.enable();
             this.listeners.svStreamRegistration.enable();
 
+            if (this.supervisorB !== undefined) {
+                this.listenersB.svBConnect.enable();
+                this.listenersB.svBDisconnect.enable();
+                this.listenersB.svBError.enable();
+                this.listenersB.svBReconnect.enable();
+            }
+
             this.listeners.scanForCameras.enable();
 
             // Start the supervisor process
@@ -314,6 +334,16 @@
                     listener.disable();
                 }
             }
+
+            if (this.supervisorB !== undefined) {
+                for( var listener in this.listenersB ) 
+                {
+                    if( this.listeners.hasOwnProperty( listener ) ) 
+                    {
+                        listener.disable();
+                    }
+                }
+            }
         }
 
         getSettingSchema()
@@ -324,7 +354,7 @@
                 'type':     'object',
                 'id':       'mjpegVideo',
                 'category' : 'video',
-
+                'managedBy': 'nobody',
                 'properties': {
                     'framerate': 
                     {

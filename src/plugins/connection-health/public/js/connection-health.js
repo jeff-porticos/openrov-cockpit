@@ -16,6 +16,7 @@
     ];
     this.pingAvg = 0;
     this.leaking = 0;
+    this.temp = 0;
   };
   //plugin.connection-health.connect-state
   ConnectionHealth.prototype.listen = function listen() {
@@ -48,6 +49,13 @@
       }
       var leaking = (self.leaking == 1);
       self.cockpit.emit('plugin.orov-leak-status.state', leaking);
+      if ('BRDT' in status) {
+         console.log("Board Temp: " + status.BRDT);
+         self.temp = status.BRDT;
+      }
+      // temps above 79C are dangerous for extended periods of time
+      var overheating = (self.temp > 79.0);
+      self.cockpit.emit('plugin.orov-temp-status.state', overheating);
     });
   };
   window.Cockpit.plugins.push(ConnectionHealth);

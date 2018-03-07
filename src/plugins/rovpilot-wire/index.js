@@ -58,6 +58,7 @@
         'category' : 'controls',
         'id': 'pilotwire',
         'type': 'object',
+        'managedBy': 'nobody',
         'properties': {
           'controlResetsSetPoint': {
             'title' : 'Fly-by-wire stabalization',

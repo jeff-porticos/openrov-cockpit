@@ -65,6 +65,9 @@
           requestedPluginDetail: {Type: String}
         },
         behaviors: [namespace('behaviors').oROVStandard],
+        _computeHidden: function() {
+          return true;
+        },
         ready: function () {
         },
         keypressed: function(e){

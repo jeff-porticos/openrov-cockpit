@@ -22,6 +22,7 @@
 <link rel="import" href="components/settings-manager/orov-settings-manager.html">
 <link rel="import" href="components/iron-media-query/iron-media-query.html">
 
+
 <!--script type='text/javascript' src="js/no-scroll-fullscreen-viewport.js"></script-->
 <style>
     #time-item[short-layout] {
@@ -115,12 +116,26 @@
     // Get the element with id="defaultOpen" and click on it
     document.getElementById("defaultOpen").click();
 
+    function captureNotify() {
+       if (!("Notification" in window)) {
+          return;
+       } else if (Notification.permission === "granted") {
+          var notification = new Notification("Image Captured!");
+       } else if (Notification.permission !== "denied") {
+          Notification.requestPermission(function (permission) {
+             if (permission === "granted") {
+                var notification = new Notification("Image Captured!");
+             }
+          });
+       }
+    }
     // determine the active camera and get its port and ip address
 
     window.cockpit.on("plugin.externalLights.snapPhoto", function() 
     {
        // get the active camera
        // execute wget http://ip:<port>/?action=snapshot -O /home/pi/snaps/<camera#.date.jpg>
+       captureNotify();
        window.cockpit.emit("plugin.externalLights.snapSelectedPhoto", activeCameraName() );
     });
 
@@ -168,19 +183,19 @@
 
     function videoControl( inName ) {
         if (inName.localeCompare("Camera 1") === 0) {
-            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", true, false, false, false );
-        }
-
-        if (inName.localeCompare("Camera 2") === 0) {
             window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, true, false, false );
         }
 
+        if (inName.localeCompare("Camera 2") === 0) {
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", true, false, false, false );
+        }
+
         if (inName.localeCompare("Camera 3") === 0) {
-            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false, true, false );
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false, false, true );
         }
 
         if (inName.localeCompare("Camera 4") === 0) {
-            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false, false, true );
+            window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, false, true, false );
         }
 
     }
@@ -234,10 +249,6 @@
         <div id="newuiContainer">
         </div>
         <div id="mainContent" class="full-height">
-            <div style='top:0px; left:0px; z-index:33; display:flex'>
-                 <orov-newui-time-slim id="time-item-collapsed" style="margin:5px" event-emitter="{{cockpitEventEmitter}}"></orov-newui-time-slim>
-                 <orov-newui-power-slim id="power-item-collapsed" style="margin:5px" event-emitter="{{cockpitEventEmitter}}"></orov-newui-power-slim>
-            </div>
             <div class="tab">
             <button class="tablinks" onclick="openCamera(event, 'Front Camera')" id="defaultOpen">Front Camera</button>
             <button class="tablinks" onclick="openCamera(event, 'Side Camera')" id="side">Side Camera</button>

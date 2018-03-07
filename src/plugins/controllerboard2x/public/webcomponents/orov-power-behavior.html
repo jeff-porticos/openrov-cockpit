@@ -84,12 +84,12 @@
                 self.setVoltage(parseFloat(data.board.voltage));
               };
 
-              if ('port' in data.battery.current){
-                if (Number.isNaN(data.battery.current.port) == false) self.setportBattery(parseFloat(data.battery.current.port));
+              if ('current' in data.board){
+                if (Number.isNaN(data.board.current) == false) self.setportBattery(parseFloat(data.board.current));
               };
 
               if ('starboard' in data.battery.current){
-                if (Number.isNaN(data.battery.current.starboard) == false) self.setstarboardBattery(parseFloat(data.battery.current.starboard));
+                if (Number.isNaN(data.battery.current.starboard) == false) self.setstarboardBattery(parseFloat(data.battery.current.port+data.battery.current.starboard+data.esc.port+data.esc.vertical+data.esc.starboard));
               };            
           },500)
         },

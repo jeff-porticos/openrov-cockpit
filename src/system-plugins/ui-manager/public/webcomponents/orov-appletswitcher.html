@@ -87,7 +87,7 @@
       <div id="container">
       <template is="dom-repeat" items="{{applets}}">
       <a on-tap="handleMenuSelection" action="page-change" target="{{item.name}}" class="grid-menu-button">
-      <paper-icon-button icon="{{item.iconMeta}}"></paper-icon-button>
+      <paper-icon-button hidden="{{item.name == 'about'}}" icon="{{item.iconMeta}}"></paper-icon-button>
       <div>{{__(item.name)}}</div>
       </a>
       </template>

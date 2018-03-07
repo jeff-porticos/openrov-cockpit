@@ -32,7 +32,7 @@
     this.gamepads = [];
     this.listeners = {};
     this.platform = null;
-    this.deadzone = 0.03;
+    this.deadzone = 0.1;
     this.maximizeThreshold = 0.97;
   };
   /**
@@ -206,8 +206,8 @@
         Y: 3,
         LB: 4,
         RB: 5,
-//        LEFT_TRIGGER: 6,
-//        RIGHT_TRIGGER: 7,
+        LEFT_TRIGGER: 6,
+        RIGHT_TRIGGER: 7,
         LEFT_STICK: 10,
         RIGHT_STICK: 11,
         START: 9,
@@ -219,23 +219,17 @@
         HOME: 16
       },
       axes: {
-        LEFT_STICK_X: 0,
-        LEFT_STICK_Y: 1,
-        RIGHT_STICK_X: 3, // was 2
-        RIGHT_STICK_Y: 4, // was 3
-        LEFT_TRIGGER: function (gamepad, manager) {
-          if (gamepad.axes[2] > 0) {
-            return manager._applyDeadzoneMaximize(gamepad.axes[2]);
-          } else {
-            return 0;
-          }
+        LEFT_STICK_X: function (gamepad, manager) {
+          return manager._applyDeadzoneMaximize(gamepad.axes[0], 0.15);
         },
-        RIGHT_TRIGGER: function (gamepad, manager) {
-          if (gamepad.axes[2] < 0) {
-            return manager._applyDeadzoneMaximize(gamepad.axes[2] * -1);
-          } else {
-            return 0;
-          }
+        LEFT_STICK_Y: function (gamepad, manager) {
+          return manager._applyDeadzoneMaximize(gamepad.axes[1], 0.15);
+        },
+        RIGHT_STICK_X: function (gamepad, manager) {
+          return manager._applyDeadzoneMaximize(gamepad.axes[2], 0.15);
+        },
+        RIGHT_STICK_Y: function (gamepad, manager) {
+          return manager._applyDeadzoneMaximize(gamepad.axes[3], 0.15);
         }
       }
     },

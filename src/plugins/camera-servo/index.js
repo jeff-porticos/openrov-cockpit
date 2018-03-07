@@ -218,7 +218,7 @@
                 'type': 'object',
                 'id': 'cameraServo',
                 'category': 'general',
-
+                'managedBy': 'nobody',
                 'properties': {
                     'speed': {
                         'title': 'Servo Speed (deg/s)',

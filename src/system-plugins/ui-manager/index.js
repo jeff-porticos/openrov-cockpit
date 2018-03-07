@@ -13,6 +13,24 @@ function UIManager(name, deps) {
   this.deps = deps;
   this.plugin = { name: 'ui-manager' };
 }
+function skipApplet(name) {
+  if (
+      (name === 'about') ||
+      (name === 'plugins') ||
+      (name === 'addons') ||
+      (name === 'settings') ||
+      (name === 'diveprofile') ||
+      (name === 'data') ||
+      (name === 'geomux') ||
+      (name === 'imu') ||
+      (name === 'misctrl') ||
+      (name === 'diagnostics')
+     )
+  {
+     return true;
+  }
+  return false;
+}
 function getPreferences(config) {
   var preferences = config.preferences.get(PREFERENCES);
   if (preferences === undefined) {
@@ -59,6 +77,9 @@ UIManager.prototype.start = function start() {
     //and ignore if it is not the theme you are using.
     //TODO: Look for applet.ejs.disable in a theme to remove the applet option.
     self.deps.cockpit.emit('ui-manager-applets', scriplets.filter(function (item) {
+      if (skipApplet(item.name)) {
+         return false;
+      }
       return [
         'footer',
         'header',
@@ -66,7 +87,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/base.ejs', {
-      title: 'ABB STIR Cockpit',
+      title: 'ABB STIR Cockpit v1.28',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -103,6 +124,9 @@ UIManager.prototype.start = function start() {
     //and ignore if it is not the theme you are using.
     //TODO: Look for applet.ejs.disable in a theme to remove the applet option.
     self.deps.cockpit.emit('ui-manager-applets', scriplets.filter(function (item) {
+      if (skipApplet(item.name)) {
+         return false;
+      }
       return [
         'footer',
         'header',
@@ -110,7 +134,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/popup.ejs', {
-      title: 'ABB STIR Cockpit',
+      title: 'ABB STIR Cockpit v1.28',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -148,6 +172,9 @@ UIManager.prototype.start = function start() {
     //and ignore if it is not the theme you are using.
     //TODO: Look for applet.ejs.disable in a theme to remove the applet option.
     self.deps.cockpit.emit('ui-manager-applets', scriplets.filter(function (item) {
+      if (skipApplet(item.name)) {
+         return false;
+      }
       return [
         'footer',
         'header',
@@ -155,7 +182,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/all_imports.ejs', {
-      title: 'ABB STIR Cockpit',
+      title: 'ABB STIR Cockpit v1.28',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -192,6 +219,9 @@ UIManager.prototype.start = function start() {
     //and ignore if it is not the theme you are using.
     //TODO: Look for applet.ejs.disable in a theme to remove the applet option.
     self.deps.cockpit.emit('ui-manager-applets', scriplets.filter(function (item) {
+      if (skipApplet(item.name)) {
+         return false;
+      }
       return [
         'footer',
         'header',
@@ -199,7 +229,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/all_scripts.ejs', {
-      title: 'ABB STIR Cockpit',
+      title: 'ABB STIR Cockpit v1.28',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -235,7 +265,8 @@ UIManager.prototype.getAppletsByTheme = function getAppletsByTheme(applets, them
 UIManager.prototype.getApplets = function getApplets() {
   var result = { base: [] };
   this.deps.loadedPlugins.forEach(function (plugin) {
-    if (plugin.plugin !== undefined && plugin.plugin.name == 'ui-manager') {
+    if ((plugin.plugin !== undefined) && (plugin.plugin.name == 'ui-manager'))
+    {
       return;
     }
     if (plugin == undefined) {
@@ -275,6 +306,7 @@ UIManager.prototype.getSettingSchema = function getSettingSchema() {
       'category': 'ui',
       'type': 'object',
       'id': 'ui-manager',
+      'managedBy': 'nobody',
       'properties': {
         'selectedUI': {
           'title' : 'Current theme',

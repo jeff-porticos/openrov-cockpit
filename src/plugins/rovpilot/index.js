@@ -151,6 +151,7 @@
         'title': 'ROV Pilot Settings',
         'id': 'rovPilot',
         'type': "object",
+        'managedBy': 'nobody',
         'properties': {
           'currentConfiguration':{
             'type': 'string'

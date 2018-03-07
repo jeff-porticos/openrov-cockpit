@@ -29,6 +29,7 @@ Globalization.prototype.getSettingSchema = function getSettingSchema() {
       'description': 'Settings for localization',
       'type': 'object',
       'id': 'globalization',
+      'managedBy': 'nobody',
       'properties': {
         'selectedLocal': {
           'type': 'string',

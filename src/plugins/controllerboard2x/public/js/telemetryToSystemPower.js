@@ -24,9 +24,9 @@
         foundData = true;
       }
 
-      if ('btti' in data) 
+      if ('BRDI' in data) 
       {
-        result.board.current = parseFloat(data.btti);
+        result.board.current = parseFloat(data.BRDI);
         foundData = true;
       }
 

@@ -229,6 +229,7 @@ class IMU
             'title': 'IMU',
             'type': 'object',     
             'id': 'imu',
+            'managedBy': 'nobody',
             'properties': {
                 'rollOffset': {
                     'title': 'Roll Offset (deg)',

@@ -2,6 +2,7 @@
 {
     const Periodic = require( 'Periodic' );
     const Listener = require( 'Listener' );
+    const Notifier = require( 'node-notifier' );
 
     // Encoding helper functions
     function encode( floatIn )
@@ -48,6 +49,7 @@
                     // Emit command to mcu
                     self.globalBus.emit( 'mcu.SendCommand', command );
                     self.selectedPhoto = 0;
+                    Notifier.notify('Still image snapped from camera');
                 }
 
                 // update selected active LED

@@ -8,6 +8,7 @@ is.prototype.getSettingSchema = function getSettingSchema() {
       'category': 'cloud',
       'type': 'object',
       'id': 'internetstreaming',
+      'managedBy': 'nobody',
       'properties': {
         'streamingServerURI': {
           'title' : 'Streaming Server Address',

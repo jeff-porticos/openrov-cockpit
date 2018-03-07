@@ -65,6 +65,7 @@ thrusters2x1.prototype.getSettingSchema = function getSettingSchema() {
       'category': 'hardware',
       'id': 'thrusters2x1',
       'type': 'object',
+      'managedBy': 'nobody',
       'properties': {
         'motor-response-delay-ms': {
           'type': 'number',

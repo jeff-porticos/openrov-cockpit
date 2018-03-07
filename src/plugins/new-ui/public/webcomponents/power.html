@@ -271,12 +271,12 @@
                 self.setCharge(parseFloat(data.battery.charge));
               };
 
-              if ('port' in data.battery.current){
-                self.setLeftBattery(parseFloat(data.battery.current.port));
+              if ('current' in data.board){
+                self.setLeftBattery(parseFloat(data.board.current));
               };
 
               if ('starboard' in data.battery.current){
-                self.setRightBattery(parseFloat(data.battery.current.starboard));
+                self.setRightBattery(parseFloat(data.battery.current.port+data.battery.current.starboard+data.esc.port+data.esc.vertical+data.esc.starboard));
               };            
             
           },2000)

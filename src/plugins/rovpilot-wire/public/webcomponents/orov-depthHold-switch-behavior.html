@@ -9,7 +9,7 @@
       properties: {
       },
       on:function(){
-       var r = confirm("Are you sure you want to have this processor FORCE takeover of operations?");
+       var r = confirm("Are you sure you want to have THIS processor force takeover of operations?");
        if (r == true) {
            this.eventEmitter.emit('plugin.rovpilot.depthHold.takeover',true);
        } else {

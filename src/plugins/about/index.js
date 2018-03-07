@@ -120,6 +120,19 @@ class About {
         this.listeners.dumpReprot.disable();
     }    
 
+    getSettingSchema()
+    {
+        //from http://json-schema.org/examples.html
+        return [{
+            'title': 'About',
+            'type': 'object',
+            'managedBy': 'nobody',
+            'id': 'about',
+            'properties': {},
+            'required': []
+        }];
+    }
+
 }
 
 module.exports = function(name, deps) {

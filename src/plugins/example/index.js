@@ -92,6 +92,7 @@
                 'title': 'Example Plugin',
                 'type': 'object',
                 'id': 'example',
+                'managedBy': 'nobody',
                 'properties': {
                   'firstName': {
                     'type': 'string',

@@ -231,7 +231,7 @@ var loaderB = new PluginLoader(path.join(__dirname, 'plugins'), 'plugin', deps,o
 options.required=false;
 options.filter = function (file) {
       return file.substring(0, 15) === 'openrov-plugin-';
-    }
+}
 options.cacheFile=path.join(cacheFolder,'cachedLoadPluginsResults_community.json');    
 var loaderC = new PluginLoader(pluginFolder, 'community-plugin', deps,options );
 

@@ -235,6 +235,7 @@ class DiveProfile
       'title': 'Dive Profile',
       'id': 'diveProfile',
       'type': 'object',
+      'managedBy': 'nobody',
       'properties': {
         'waterType': {
           'type': 'string',

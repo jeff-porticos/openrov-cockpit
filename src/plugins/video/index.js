@@ -44,6 +44,7 @@ class Video
             'category' :    'video',
             'id':           'videosettings',
             'type':         'object',
+            'managedBy':    'nobody',
             'properties': 
             {
                 'show-stats': 

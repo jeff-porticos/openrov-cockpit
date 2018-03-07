@@ -46,7 +46,7 @@ class SystemPower
         title:    'Battery Formulas',
         category: 'power',        
         type:     'object',
-
+        managedBy: 'nobody',
         properties: 
         {
           batteries: 

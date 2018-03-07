@@ -131,6 +131,7 @@ class Notifications {
             'title': 'Notification Settings',
             'type': 'object',
             'id': 'notifications',
+            'managedBy': 'nobody',
             'properties': {
                 'persistBetweenReboots': {
                     'type': 'boolean',

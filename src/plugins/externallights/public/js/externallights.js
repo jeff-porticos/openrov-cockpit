@@ -179,14 +179,10 @@
                 },
                 gamepad:
                 {
-                    "DPAD_UP": { type: "button",
-                           action: 'plugin.externalLights.stepPositive' },
-                    "DPAD_DOWN": { type: "button",
-                           action: 'plugin.externalLights.stepNegative' },
-                    "DPAD_LEFT": { type: "button",
-                           action: 'plugin.externalLights.toggle' },
                     "DPAD_RIGHT": { type: "button",
-                           action: 'plugin.externalLights.toggleAll' },
+                           action: 'plugin.externalLights.stepPositive' },
+                    "DPAD_LEFT": { type: "button",
+                           action: 'plugin.externalLights.stepNegative' },
                     "Y": { type: "button",
                            action: 'plugin.externalLights.topCamera' },
                     "A": { type: "button",
