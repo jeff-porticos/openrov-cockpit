@@ -34,7 +34,7 @@
 
             var self = this;
 
-            this.SyncTargetPower = new Periodic( 100, "timeout", function()
+            this.SyncTargetPower = new Periodic( 500, "timeout", function()
             {
                 var synced = true;
 
@@ -55,13 +55,13 @@
                 // update selected active LED
                 if( self.mcuSelectedLight !== self.selectedLight )
                 {
-                    synced = false;
-
                     // Encode floating point to integer representation
                     var command = 'elights_select(' + self.selectedLight + ')';
 
                     // Emit command to mcu
                     self.globalBus.emit( 'mcu.SendCommand', command );
+                    // force immediate synchronization
+                    self.mcuSelectedLight = self.selectedLight;
                 }
 
 

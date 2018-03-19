@@ -181,6 +181,15 @@
         return( "Camera " + i.toString() );
     }
 
+    function reenable() {
+        var tablinks;
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].disabled = false;
+        }
+    }
+
     function videoControl( inName ) {
         if (inName.localeCompare("Camera 1") === 0) {
             window.cockpit.emit("plugin.mjpegVideo.scanForCameras", false, true, false, false );
@@ -230,16 +239,23 @@
         tablinks = document.getElementsByClassName("tablinks");
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
+            tablinks[i].disabled = true;
         }
 
         // Show the current tab, and add an "active" class to the button that opened the tab
         document.getElementById(cameraName).style.display = "inline-block";
+        document.getElementById(cameraName).disabled = false;
         evt.currentTarget.className += " active";
         
         var baseName = convertName(cameraName);
         window.cockpit.emit("activeCameraTab", baseName );
         window.cockpit.emit("plugin.externalLights.setSelectedLight", baseName );
         videoControl(baseName);
+        // disable tab operations for 3 seconds
+        // to prevent fast switching of cameras
+        // which hangs the command socket between the 
+        // browser and the PI
+        setTimeout(reenable,3000);
     }
 
 </script>

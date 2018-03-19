@@ -39,7 +39,7 @@ function Bridge(socket_id) {
     });
 
     serialPort.on('error',function(err){
-          console.log('error ',err)
+        console.log('error! ',err);
     });
 
     serialPort.on('close', function (data) {
@@ -92,6 +92,7 @@ function Bridge(socket_id) {
   };
 
   bridge.close = function () {
+    console.log('bridge.close');
     if (!serialConnected){
       return;
     }

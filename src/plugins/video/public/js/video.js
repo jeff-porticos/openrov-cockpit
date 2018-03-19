@@ -135,6 +135,13 @@
             CameraRegistrations[ data.sourceAddress ] = false;
         };
 
+        ws[ data.sourceAddress ].onerror = function() 
+        {
+            console.log( "Error on connection to video websocket. Removing registration." );
+            CameraRegistrations[ data.sourceAddress ] = false;
+            ws[ data.sourceAddress ].close();
+        };
+
         self.cockpit.emit( 'CameraRegistration', data );
         break;
 

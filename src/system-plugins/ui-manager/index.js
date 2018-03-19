@@ -19,6 +19,7 @@ function skipApplet(name) {
       (name === 'plugins') ||
       (name === 'addons') ||
       (name === 'settings') ||
+      (name === 'mjpeg') ||
       (name === 'diveprofile') ||
       (name === 'data') ||
       (name === 'geomux') ||
