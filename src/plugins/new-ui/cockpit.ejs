@@ -250,7 +250,7 @@
         var baseName = convertName(cameraName);
         window.cockpit.emit("activeCameraTab", baseName );
         window.cockpit.emit("plugin.externalLights.setSelectedLight", baseName );
-        videoControl(baseName);
+        // videoControl(baseName);
         // disable tab operations for 3 seconds
         // to prevent fast switching of cameras
         // which hangs the command socket between the 
