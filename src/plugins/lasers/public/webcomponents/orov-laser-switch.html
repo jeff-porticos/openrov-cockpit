@@ -16,9 +16,9 @@
     },
     behaviors: [namespace('behaviors').oROVStandard,namespace('behaviors').oROVLaserSwitch],
     ready:function(){
-        this.defaultPanel="";
-        this.shortName="DEPTH";
-        this.description="Depth Control on/off";
+        this.defaultPanel="flight-switches";
+        this.shortName="HiRES";
+        this.description="Resolution Control HIGH/LOW";
     },
     _handleSwitchChange:function(){
         if (this.$.toggle.checked){

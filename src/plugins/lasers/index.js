@@ -1,10 +1,13 @@
 (function () {
   function Laser(name, deps) {
     deps.logger.debug('Laser plugin loaded');
+    this.globalBus  = deps.globalEventLoop;
+    this.cockpitBus = deps.cockpit;
+    var self = this;
     var claserstate = 0;
     // Cockpit
-    deps.cockpit.on('plugin.laser.balance', function (value) {
-      sendBalance(value);
+    deps.cockpit.on('plugin.laser.highLow', function (value) {
+      sendHighLow(value);
     });
     deps.cockpit.on('plugin.laser.pids', function (value) {
       sendPIDs(value);
@@ -15,24 +18,25 @@
     deps.cockpit.on('plugin.laser.init', function (value) {
       sendInit(value);
     });
-    // Arduino
-    deps.globalEventLoop.on('mcu.status', function (data) {
-      if ('cbalance' in data) {
-        var enabled = (data.cbalance != 0);
-        deps.cockpit.emit('plugin.laser.state', { enabled: enabled ? true : false });
+    var sendHighLow = function (state) {
+      console.log(state);
+      if (state == '0') {
+        var settings = { mjpegVideo: { framerate:  " -framerate 10 ", resolution:  " -x 1280 -y 720 "  }};
+        var value = { enabled: false };
+      } else {
+        var settings = { mjpegVideo: { framerate:  " -framerate 5 ", resolution:  " -x 1920 -y 1080 " } };
+        var value = { enabled: true };
       }
-    });
-    var sendBalance = function (state) {
-      deps.globalEventLoop.emit('mcu.SendCommand', 'start_balance(' + state + ')');
+      console.log(settings);
+      self.globalBus.emit('settings-change.mjpegVideo', settings);
+      self.cockpitBus.emit('plugin.laser.state', value);
     };
     var sendPIDs = function (state) {
-      deps.globalEventLoop.emit('mcu.SendCommand', 'enable_pids(' + state + ')');
     };
     var sendThrusters = function (state) {
       deps.globalEventLoop.emit('mcu.SendCommand', 'enable_thrusters(' + state + ')');
     };
     var sendInit = function (state) {
-      deps.globalEventLoop.emit('mcu.SendCommand', 'init_balance(' + state + ')');
     };
   }
 

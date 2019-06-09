@@ -200,10 +200,13 @@
 
                         // Send update to supervisor so it restarts the stream
                         this.supervisor.emit( "updateSettings", this.settings );
+                        if (this.supervisorB !== undefined) {
+                            this.supervisorB.emit( "updateSettings", this.settings );
+                        }
                     }
                     catch( err )
                     {
-                        // Do nothing
+                        logger.info("mjpeg-streamer settings-change error: " + err);
                     }
                 }),
 
@@ -361,29 +364,30 @@
                         'type': 'string',
                         'enum': 
                         [
-                            '30',
-                            '15',
-                            '10'
+                            ' -framerate 30 ',
+                            ' -framerate 15 ',
+                            ' -framerate 10 ',
+                            ' -framerate 5 '
                         ],
                         'title': 'Framerate (FPS)',
-                        'default': '10'
+                        'default': ' -framerate 10 '
                     },
                     'resolution': 
                     {
                         'type': 'string',
                         'enum': 
                         [
-                            '1920x1080',
-                            '1280x720',
-                            '800x600',
-                            '640x480',
-                            '352x288',
-                            '320x240',
-                            '176x144',
-                            '160x120'
+                            ' -x 1920 -y 1080 ',
+                            ' -x 1280 -y 720 ',
+                            ' -x 800 -y 600 ',
+                            ' -x 640 -y 480 ',
+                            ' -x 352 -y 288 ',
+                            ' -x 320 -y 240 ',
+                            ' -x 176 -y 144 ',
+                            ' -x 160 -y 120 '
                         ],
                         'title': 'Resolution',
-                        'default': '800x600'
+                        'default': ' -x 1280 -y 720 '
                     }                    
                 },
 

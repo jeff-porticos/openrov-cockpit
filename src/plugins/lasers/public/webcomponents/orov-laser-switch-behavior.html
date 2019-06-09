@@ -6,13 +6,11 @@
 (function (window) {
   'use strict';
       var switchBehaviorImpl= {
-      properties: {
+      on: function(){
+        this.eventEmitter.emit('plugin.laser.highLow',1);
       },
-      on:function(){
-        this.eventEmitter.emit('plugin.laser.balance',1)
-      },
-      off:function(){
-        this.eventEmitter.emit('plugin.laser.balance',0)
+      off: function(){
+        this.eventEmitter.emit('plugin.laser.highLow',0);
       },
       registerEmitterHandlers: function(emitter){
         var self = this;

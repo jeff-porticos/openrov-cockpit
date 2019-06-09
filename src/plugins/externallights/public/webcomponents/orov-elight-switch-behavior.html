@@ -8,9 +8,11 @@
       var switchBehaviorImpl= {
       on:function(){
         this.eventEmitter.emit('plugin.externalLights.on')
+        this.eventEmitter.emit("plugin.mjpegVideo.scanForCameras", true, true, true, true );
       },
       off:function(){
         this.eventEmitter.emit('plugin.externalLights.off')
+        this.eventEmitter.emit("plugin.mjpegVideo.scanForCameras", false, false, false, false );
       },
       registerEmitterHandlers: function(emitter){
         var self = this;

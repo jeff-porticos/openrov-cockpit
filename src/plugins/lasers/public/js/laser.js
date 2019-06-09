@@ -7,7 +7,7 @@
     var self = this;
     self.cockpit = cockpit;
     
-    self.balanceState = {
+    self.highLow = {
       enabled: false
     };
     
@@ -26,16 +26,16 @@
 
     this.actions = 
     {
-      "plugin.laser.balance":
+      "plugin.laser.highLow":
       {
-        description: 'Toggle automatic depth/balance control',
+        description: 'Toggle camera resolution between HIGH and LOW',
         controls:
         {
           button:
           {
             down: function() {
-              cockpit.rov.emit('plugin.laser.balance', self.balanceState.enabled == true ? 0 : 1);
-              self.balanceState.enabled = !self.balanceState.enabled;
+              cockpit.rov.emit('plugin.laser.highLow', self.highLow.enabled == true ? 0 : 1);
+              self.highLow.enabled = !self.highLow.enabled;
             }            
           }
         }
@@ -89,12 +89,12 @@
       keyboard:
       {
         "t": { type: "button",
-               action: "plugin.laser.balance" }
+               action: "plugin.laser.highLow" }
       },
       gamepad:
       {
         "START": { type: "button",
-               action: "plugin.laser.balance" }
+               action: "plugin.laser.highLow" }
       }
     };
     
@@ -104,8 +104,8 @@
 
   plugins.Laser.prototype.getTelemetryDefinitions = function getTelemetryDefinitions() {
     return [{
-        name: 'cbalance',
-        description: 'Auto depth/balance algorithm state'
+        name: 'highLow',
+        description: 'Current camera resolution (HIGH or LOW)'
       }];
   };
   //This pattern will hook events in the cockpit and pull them all back
@@ -113,12 +113,15 @@
   plugins.Laser.prototype.listen = function listen() {
     var self = this;
     /* Forward calls on the COCKPIT emitter to the ROV  */
+    self.cockpit.on('plugin.laser.highLow', function (value) {
+      cockpit.rov.emit('plugin.laser.highLow', value);
+    });
     self.cockpit.on('plugin.laser.set', function (value) {
       cockpit.rov.emit('plugin.laser.set', value);
     });
-    self.cockpit.rov.withHistory.on('plugin.laser.state', function (data) {
-      self.laserState = data;
-      cockpit.emit('plugin.laser.state', data);
+    self.cockpit.rov.withHistory.on('plugin.laser.state', function (state) {
+      self.highLow.enabled = state.enabled;
+      cockpit.emit('plugin.laser.state', state);
     });
   };
   window.Cockpit.plugins.push(plugins.Laser);
