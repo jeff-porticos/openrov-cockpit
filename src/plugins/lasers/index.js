@@ -28,8 +28,8 @@
         var value = { enabled: true };
       }
       console.log(settings);
-      self.globalBus.emit('settings-change.mjpegVideo', settings);
       self.cockpitBus.emit('plugin.laser.state', value);
+      self.globalBus.emit('settings-change.mjpegVideo', settings);
     };
     var sendPIDs = function (state) {
     };
