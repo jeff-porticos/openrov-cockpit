@@ -88,7 +88,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/base.ejs', {
-      title: 'ABB STIR Cockpit v1.28',
+      title: 'ABB TXplore Cockpit v1.30',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -135,7 +135,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/popup.ejs', {
-      title: 'ABB STIR Cockpit v1.28',
+      title: 'ABB TXplore Cockpit v1.30',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -183,7 +183,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/all_imports.ejs', {
-      title: 'ABB STIR Cockpit v1.28',
+      title: 'ABB TXplore Cockpit v1.30',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,
@@ -230,7 +230,7 @@ UIManager.prototype.start = function start() {
       ].indexOf(item.name) == -1;
     }));
     res.render(__dirname + '/all_scripts.ejs', {
-      title: 'ABB STIR Cockpit v1.28',
+      title: 'ABB TXplore Cockpit v1.30',
       scripts: pathInfo.scripts,
       styles: pathInfo.styles,
       sysscripts: pathInfo.sysscripts,

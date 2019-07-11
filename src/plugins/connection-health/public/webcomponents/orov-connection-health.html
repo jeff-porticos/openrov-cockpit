@@ -41,17 +41,17 @@
   <template>
       <div class="layout horizontal">
       <paper-tooltip for="orovTempStatus">
-        {{__("STIR Temperature")}}
+        {{__("TXplore Temperature")}}
       </paper-tooltip>
         <div id="orovTempStatus" class$="{{computedTempClass(isHot)}}">TEMP</div>
 
       <paper-tooltip for="orovLeakStatus">
-        {{__("STIR Leak Detection")}}
+        {{__("TXplore Leak Detection")}}
       </paper-tooltip>
         <div id="orovLeakStatus" class$="{{computedLeakClass(isLeaky)}}">LEAK</div>
 
       <paper-tooltip for="connectionHealth">
-        {{__("Device to STIR round trip latency")}}:{{_formatms(latency)}}{{__('ms')}}
+        {{__("Device to TXplore round trip latency")}}:{{_formatms(latency)}}{{__('ms')}}
       </paper-tooltip>
         <div id="connectionHealth" class$="{{computedClass(isConnected)}}">COM</div>
       </div>
