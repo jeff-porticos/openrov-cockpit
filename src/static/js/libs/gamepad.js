@@ -489,6 +489,7 @@
     } else if (gamepad.mapping == 'standard') {
       return Gamepad.Type.STANDARD;
     } else {
+      // return Gamepad.Type.STANDARD;
       return Gamepad.Type.UNSUPPORTED;
     }
   };
@@ -542,7 +543,8 @@
           value = mapping(this.gamepads[i], this);
         } else {
           if (this.gamepads[i].buttons[mapping] !== undefined) {
-            value = this.gamepads[i].buttons[mapping].value;
+            value = navigator.getGamepads()[i].buttons[mapping].value;
+            // value = this.gamepads[i].buttons[mapping].value;
           } else {
             value = 0;
           }
@@ -587,9 +589,11 @@
       for (controlName in this.gamepads[i].libmapping.axes) {
         mapping = this.gamepads[i].libmapping.axes[controlName];
         if (typeof mapping === 'function') {
-          value = mapping(this.gamepads[i], this);
+          value = mapping(navigator.getGamepads()[i], this);
+          // value = mapping(this.gamepads[i], this);
         } else {
-          value = this._applyDeadzoneMaximize(this.gamepads[i].axes[mapping]);
+          value = this._applyDeadzoneMaximize(navigator.getGamepads()[i].axes[mapping]);
+          // value = this._applyDeadzoneMaximize(this.gamepads[i].axes[mapping]);
         }
         this.gamepads[i].state[controlName] = value;
         if (value !== this.gamepads[i].lastState[controlName]) {

@@ -35,9 +35,12 @@ class DiveProfile
     this.clearDepthOffsetAck    = false;
 
     // State information
-    this.depth        = 0;    // meters
-    this.pressure     = 0;    // kPa
-    this.temperature  = 0;    // celsius
+    this.ballast_pressure = 0;    // kPa
+    this.ballast_max_pressure = 0;    // kPa
+    this.depth         = 0;    // meters
+    this.pressure      = 0;    // kPa
+    this.temperature   = 0;    // celsius
+    this.ballast_temp  = 0;    // celsius
     this.waterType    = "Fresh";
 
     this.SyncSettings = new Periodic( 100, "timeout", function()
@@ -144,6 +147,27 @@ class DiveProfile
             {
                 self.temperature = decode( parseInt( data.depth_t ) );
                 self.globalBus.emit( "plugin.diveProfile.temp", self.temperature );
+            }
+    
+            // Ballast Max Pressure
+            if( 'ballast_mp' in data ) 
+            {
+                self.ballast_max_pressure = decode( parseInt( data.ballast_mp ) );
+                self.globalBus.emit( "plugin.diveProfile.ballast_max_pressure", self.ballast_max_pressure );
+            }
+    
+            // Ballast Pressure
+            if( 'ballast_p' in data ) 
+            {
+                self.ballast_pressure = decode( parseInt( data.ballast_p ) );
+                self.globalBus.emit( "plugin.diveProfile.ballast_pressure", self.ballast_pressure );
+            }
+    
+            // Ballast Temperature
+            if( 'ballast_t' in data ) 
+            {
+                self.ballast_temp = decode( parseInt( data.ballast_t ) );
+                self.globalBus.emit( "plugin.diveProfile.ballast_temp", self.ballast_temp );
             }
     
             // Water type

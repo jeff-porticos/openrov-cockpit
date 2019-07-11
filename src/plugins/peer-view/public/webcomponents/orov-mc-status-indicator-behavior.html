@@ -9,7 +9,9 @@
   behaviors.oROVMCStatusIndicator = {
       properties: {
            streaming:{type:Boolean,value:false},
-           viewers:{type:Array,value:function(){return [];}}
+           viewers:{type:Array,value:function(){return [];}},
+           pressure:{type:String,value:"0"},
+           max_pressure:{type:String,value:"0"}
       },
       behaviors: [namespace('behaviors').oROVStandard],
       attached: function(){       
@@ -20,6 +22,11 @@
             self.set('streaming',status.viewers.length>0);
             self.set('viewers',status.viewers);
             self.viewers=status.viewers;
+          });
+          // just get the pressure
+          emitter.on('plugin.navigationData.data', function (data) {
+            self.pressure = data.ballast_pressure;
+            self.max_pressure = data.ballast_max_pressure;
           });
       }
     }

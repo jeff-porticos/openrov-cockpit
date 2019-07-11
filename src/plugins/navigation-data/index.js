@@ -7,6 +7,8 @@
         yaw: 0,
         thrust: 0,
         depth: 0,
+        ballast_pressure: 0,
+        ballast_max_pressure: 0,
         heading: 0
       };
     this.state = {imuMode: 'gyro'}
@@ -43,6 +45,16 @@
     deps.globalEventLoop.on('plugin.diveProfile.depth', function (value)
     {
       navdata.depth = value;
+    });
+
+    deps.globalEventLoop.on('plugin.diveProfile.ballast_pressure', function (value)
+    {
+      navdata.ballast_pressure = value;
+    });
+
+    deps.globalEventLoop.on('plugin.diveProfile.ballast_max_pressure', function (value)
+    {
+      navdata.ballast_max_pressure = value;
     });
 
     deps.globalEventLoop.on('mcu.status', function (status)
