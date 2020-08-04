@@ -2,7 +2,7 @@ const Promise       = require( 'bluebird' );
 const fs            = Promise.promisifyAll( require('fs') );
 const path          = require('path');
 const spawn         = require('child_process').spawn;
-const SerialBridge  = require('SerialBridge.js');
+// const SerialBridge  = require('SerialBridge.js');
 const ConnectionBridge  = require('ConnectionBridge.js');
 
 var Periodic        = require( 'Periodic' );
